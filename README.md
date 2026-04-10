@@ -89,6 +89,12 @@ Run the comparison script:
 python scripts/compare_benchmarks.py
 ```
 
+Render a markdown benchmark report:
+
+```bash
+python scripts/render_benchmark_report.py
+```
+
 ## API Endpoints
 
 - `GET /health`
@@ -149,6 +155,8 @@ The comparison script writes a second artifact like:
 ## Benchmark Snapshot
 
 Current comparison summary from `results/retrieval-backend-comparison.json`:
+
+A rendered markdown version of the latest benchmark summary is available at `results/benchmark-report.md`.
 
 | Strategy | Hit Rate | MRR | nDCG | Faithfulness |
 | --- | ---: | ---: | ---: | ---: |
