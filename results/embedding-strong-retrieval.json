@@ -1,0 +1,492 @@
+{
+  "run_id": "embedding-strong-retrieval",
+  "question_count": 12,
+  "average_retrieval_relevance": 0.23333333333333336,
+  "average_retrieval_hit_rate": 0.9166666666666666,
+  "average_retrieval_mrr": 0.875,
+  "average_retrieval_ndcg": 0.8859108127976215,
+  "average_citation_support": 1.0,
+  "average_answer_faithfulness": 0.8509089180927166,
+  "case_results": [
+    {
+      "question": "When can a missed class be treated as excused?",
+      "retrieval_strategy": "embedding_strong",
+      "retrieved_chunk_ids": [
+        "university_policy_sample-chunk-1",
+        "university_policy_sample-chunk-2",
+        "public_operations_manual-chunk-1",
+        "incident_response_playbook-chunk-4",
+        "incident_response_playbook-chunk-2"
+      ],
+      "retrieval_scores": {
+        "university_policy_sample-chunk-1": 0.7858,
+        "university_policy_sample-chunk-2": 0.6712,
+        "public_operations_manual-chunk-1": 0.4911,
+        "incident_response_playbook-chunk-4": 0.489,
+        "incident_response_playbook-chunk-2": 0.4854
+      },
+      "retrieval_relevance": 0.2,
+      "retrieval_hit_rate": 1.0,
+      "retrieval_mrr": 1.0,
+      "retrieval_ndcg": 1.0,
+      "citation_support": 1.0,
+      "answer_faithfulness": 0.9024390243902439,
+      "citation_checks": [
+        {
+          "chunk_id": "university_policy_sample-chunk-1",
+          "document_id": "university_policy_sample",
+          "claim_text": "An excused absence includes documented illness, religious observance, military service, or university-sponsored travel when approved by the instructor.",
+          "support_score": 1.0,
+          "supported": true
+        },
+        {
+          "chunk_id": "university_policy_sample-chunk-2",
+          "document_id": "university_policy_sample",
+          "claim_text": "Late Work Policy Assignments submitted after the deadline may receive a grade penalty unless the student has prior approval or a documented emergency.",
+          "support_score": 1.0,
+          "supported": true
+        }
+      ]
+    },
+    {
+      "question": "What happens to coursework turned in after the cutoff?",
+      "retrieval_strategy": "embedding_strong",
+      "retrieved_chunk_ids": [
+        "university_policy_sample-chunk-2",
+        "university_policy_sample-chunk-1",
+        "incident_response_playbook-chunk-4",
+        "incident_response_playbook-chunk-1",
+        "incident_response_playbook-chunk-2"
+      ],
+      "retrieval_scores": {
+        "university_policy_sample-chunk-2": 0.6641,
+        "university_policy_sample-chunk-1": 0.5753,
+        "incident_response_playbook-chunk-4": 0.5359,
+        "incident_response_playbook-chunk-1": 0.4872,
+        "incident_response_playbook-chunk-2": 0.485
+      },
+      "retrieval_relevance": 0.2,
+      "retrieval_hit_rate": 1.0,
+      "retrieval_mrr": 1.0,
+      "retrieval_ndcg": 1.0,
+      "citation_support": 1.0,
+      "answer_faithfulness": 0.9024390243902439,
+      "citation_checks": [
+        {
+          "chunk_id": "university_policy_sample-chunk-2",
+          "document_id": "university_policy_sample",
+          "claim_text": "Late Work Policy Assignments submitted after the deadline may receive a grade penalty unless the student has prior approval or a documented emergency.",
+          "support_score": 1.0,
+          "supported": true
+        },
+        {
+          "chunk_id": "university_policy_sample-chunk-1",
+          "document_id": "university_policy_sample",
+          "claim_text": "An excused absence includes documented illness, religious observance, military service, or university-sponsored travel when approved by the instructor.",
+          "support_score": 1.0,
+          "supported": true
+        }
+      ]
+    },
+    {
+      "question": "How should someone disclose a security flaw before a fix is ready?",
+      "retrieval_strategy": "embedding_strong",
+      "retrieved_chunk_ids": [
+        "opensource_maintainer_guide-chunk-1",
+        "opensource_maintainer_guide-chunk-3",
+        "incident_response_playbook-chunk-4",
+        "incident_response_playbook-chunk-3",
+        "incident_response_playbook-chunk-2"
+      ],
+      "retrieval_scores": {
+        "opensource_maintainer_guide-chunk-1": 0.7389,
+        "opensource_maintainer_guide-chunk-3": 0.5444,
+        "incident_response_playbook-chunk-4": 0.5305,
+        "incident_response_playbook-chunk-3": 0.5272,
+        "incident_response_playbook-chunk-2": 0.5252
+      },
+      "retrieval_relevance": 0.2,
+      "retrieval_hit_rate": 1.0,
+      "retrieval_mrr": 1.0,
+      "retrieval_ndcg": 1.0,
+      "citation_support": 1.0,
+      "answer_faithfulness": 0.8181818181818182,
+      "citation_checks": [
+        {
+          "chunk_id": "opensource_maintainer_guide-chunk-1",
+          "document_id": "opensource_maintainer_guide",
+          "claim_text": "Reporters should avoid opening a public issue or publishing exploit details until a fix is available.",
+          "support_score": 1.0,
+          "supported": true
+        },
+        {
+          "chunk_id": "opensource_maintainer_guide-chunk-3",
+          "document_id": "opensource_maintainer_guide",
+          "claim_text": "Issue Triage General bugs, feature requests, and documentation corrections belong in the public issue tracker.",
+          "support_score": 1.0,
+          "supported": true
+        }
+      ]
+    },
+    {
+      "question": "Which release track should cautious teams choose if they value stability?",
+      "retrieval_strategy": "embedding_strong",
+      "retrieved_chunk_ids": [
+        "opensource_maintainer_guide-chunk-2",
+        "opensource_maintainer_guide-chunk-3",
+        "opensource_maintainer_guide-chunk-1",
+        "incident_response_playbook-chunk-3",
+        "incident_response_playbook-chunk-4"
+      ],
+      "retrieval_scores": {
+        "opensource_maintainer_guide-chunk-2": 0.6614,
+        "opensource_maintainer_guide-chunk-3": 0.597,
+        "opensource_maintainer_guide-chunk-1": 0.5496,
+        "incident_response_playbook-chunk-3": 0.5451,
+        "incident_response_playbook-chunk-4": 0.528
+      },
+      "retrieval_relevance": 0.2,
+      "retrieval_hit_rate": 1.0,
+      "retrieval_mrr": 1.0,
+      "retrieval_ndcg": 1.0,
+      "citation_support": 1.0,
+      "answer_faithfulness": 0.7931034482758621,
+      "citation_checks": [
+        {
+          "chunk_id": "opensource_maintainer_guide-chunk-2",
+          "document_id": "opensource_maintainer_guide",
+          "claim_text": "Release Channels Teams that want predictable upgrades should use the long-term support release channel.",
+          "support_score": 1.0,
+          "supported": true
+        },
+        {
+          "chunk_id": "opensource_maintainer_guide-chunk-3",
+          "document_id": "opensource_maintainer_guide",
+          "claim_text": "Maintainers label issues based on severity, reproducibility, and release impact.",
+          "support_score": 1.0,
+          "supported": true
+        }
+      ]
+    },
+    {
+      "question": "What approvals are needed before buying home office gear?",
+      "retrieval_strategy": "embedding_strong",
+      "retrieved_chunk_ids": [
+        "public_operations_manual-chunk-2",
+        "public_operations_manual-chunk-3",
+        "public_operations_manual-chunk-1",
+        "incident_response_playbook-chunk-3",
+        "opensource_maintainer_guide-chunk-2"
+      ],
+      "retrieval_scores": {
+        "public_operations_manual-chunk-2": 0.7627,
+        "public_operations_manual-chunk-3": 0.623,
+        "public_operations_manual-chunk-1": 0.5282,
+        "incident_response_playbook-chunk-3": 0.4953,
+        "opensource_maintainer_guide-chunk-2": 0.4945
+      },
+      "retrieval_relevance": 0.2,
+      "retrieval_hit_rate": 1.0,
+      "retrieval_mrr": 1.0,
+      "retrieval_ndcg": 1.0,
+      "citation_support": 1.0,
+      "answer_faithfulness": 0.8611111111111112,
+      "citation_checks": [
+        {
+          "chunk_id": "public_operations_manual-chunk-2",
+          "document_id": "public_operations_manual",
+          "claim_text": "Remote Work Equipment Staff members may request a monitor, keyboard, webcam, or headset for home office use.",
+          "support_score": 1.0,
+          "supported": true
+        },
+        {
+          "chunk_id": "public_operations_manual-chunk-3",
+          "document_id": "public_operations_manual",
+          "claim_text": "Requests that process customer data also need a security assessment before a contract is signed.",
+          "support_score": 1.0,
+          "supported": true
+        }
+      ]
+    },
+    {
+      "question": "Which checks happen before software handling customer information can be bought?",
+      "retrieval_strategy": "embedding_strong",
+      "retrieved_chunk_ids": [
+        "public_operations_manual-chunk-3",
+        "public_operations_manual-chunk-2",
+        "incident_response_playbook-chunk-3",
+        "opensource_maintainer_guide-chunk-1",
+        "incident_response_playbook-chunk-4"
+      ],
+      "retrieval_scores": {
+        "public_operations_manual-chunk-3": 0.7385,
+        "public_operations_manual-chunk-2": 0.5909,
+        "incident_response_playbook-chunk-3": 0.5665,
+        "opensource_maintainer_guide-chunk-1": 0.5381,
+        "incident_response_playbook-chunk-4": 0.5305
+      },
+      "retrieval_relevance": 0.0,
+      "retrieval_hit_rate": 1.0,
+      "retrieval_mrr": 1.0,
+      "retrieval_ndcg": 1.0,
+      "citation_support": 1.0,
+      "answer_faithfulness": 0.8787878787878788,
+      "citation_checks": [
+        {
+          "chunk_id": "public_operations_manual-chunk-3",
+          "document_id": "public_operations_manual",
+          "claim_text": "Requests that process customer data also need a security assessment before a contract is signed.",
+          "support_score": 1.0,
+          "supported": true
+        },
+        {
+          "chunk_id": "public_operations_manual-chunk-2",
+          "document_id": "public_operations_manual",
+          "claim_text": "Equipment requests need manager approval before purchase and must be recorded in the asset inventory system.",
+          "support_score": 1.0,
+          "supported": true
+        }
+      ]
+    },
+    {
+      "question": "Can business travelers claim alcohol with their meal receipts?",
+      "retrieval_strategy": "embedding_strong",
+      "retrieved_chunk_ids": [
+        "public_operations_manual-chunk-1",
+        "public_operations_manual-chunk-2",
+        "university_policy_sample-chunk-1",
+        "public_operations_manual-chunk-3",
+        "incident_response_playbook-chunk-2"
+      ],
+      "retrieval_scores": {
+        "public_operations_manual-chunk-1": 0.7848,
+        "public_operations_manual-chunk-2": 0.5282,
+        "university_policy_sample-chunk-1": 0.4893,
+        "public_operations_manual-chunk-3": 0.4753,
+        "incident_response_playbook-chunk-2": 0.4725
+      },
+      "retrieval_relevance": 0.2,
+      "retrieval_hit_rate": 1.0,
+      "retrieval_mrr": 1.0,
+      "retrieval_ndcg": 1.0,
+      "citation_support": 1.0,
+      "answer_faithfulness": 0.8181818181818182,
+      "citation_checks": [
+        {
+          "chunk_id": "public_operations_manual-chunk-1",
+          "document_id": "public_operations_manual",
+          "claim_text": "Meal reimbursement requires itemized receipts, and alcohol is not reimbursable.",
+          "support_score": 1.0,
+          "supported": true
+        },
+        {
+          "chunk_id": "public_operations_manual-chunk-2",
+          "document_id": "public_operations_manual",
+          "claim_text": "Remote Work Equipment Staff members may request a monitor, keyboard, webcam, or headset for home office use.",
+          "support_score": 1.0,
+          "supported": true
+        }
+      ]
+    },
+    {
+      "question": "How should on-call ownership be shared to prevent burnout?",
+      "retrieval_strategy": "embedding_strong",
+      "retrieved_chunk_ids": [
+        "incident_response_playbook-chunk-1",
+        "incident_response_playbook-chunk-3",
+        "incident_response_playbook-chunk-2",
+        "public_operations_manual-chunk-2",
+        "incident_response_playbook-chunk-4"
+      ],
+      "retrieval_scores": {
+        "incident_response_playbook-chunk-1": 0.612,
+        "incident_response_playbook-chunk-3": 0.5781,
+        "incident_response_playbook-chunk-2": 0.5738,
+        "public_operations_manual-chunk-2": 0.5672,
+        "incident_response_playbook-chunk-4": 0.5275
+      },
+      "retrieval_relevance": 0.2,
+      "retrieval_hit_rate": 1.0,
+      "retrieval_mrr": 1.0,
+      "retrieval_ndcg": 1.0,
+      "citation_support": 1.0,
+      "answer_faithfulness": 0.868421052631579,
+      "citation_checks": [
+        {
+          "chunk_id": "incident_response_playbook-chunk-1",
+          "document_id": "incident_response_playbook",
+          "claim_text": "On-Call Rotation Primary incident duty rotates among maintainers every seven days to spread operational load and reduce responder fatigue.",
+          "support_score": 1.0,
+          "supported": true
+        },
+        {
+          "chunk_id": "incident_response_playbook-chunk-3",
+          "document_id": "incident_response_playbook",
+          "claim_text": "Scheduled Restart Checklist Planned maintenance restarts require a checklist review by the operations coordinator.",
+          "support_score": 1.0,
+          "supported": true
+        }
+      ]
+    },
+    {
+      "question": "Who can reverse a bad deployment during an outage?",
+      "retrieval_strategy": "embedding_strong",
+      "retrieved_chunk_ids": [
+        "incident_response_playbook-chunk-2",
+        "incident_response_playbook-chunk-3",
+        "incident_response_playbook-chunk-4",
+        "incident_response_playbook-chunk-1",
+        "opensource_maintainer_guide-chunk-1"
+      ],
+      "retrieval_scores": {
+        "incident_response_playbook-chunk-2": 0.8027,
+        "incident_response_playbook-chunk-3": 0.6374,
+        "incident_response_playbook-chunk-4": 0.5491,
+        "incident_response_playbook-chunk-1": 0.5436,
+        "opensource_maintainer_guide-chunk-1": 0.5246
+      },
+      "retrieval_relevance": 0.2,
+      "retrieval_hit_rate": 1.0,
+      "retrieval_mrr": 1.0,
+      "retrieval_ndcg": 1.0,
+      "citation_support": 1.0,
+      "answer_faithfulness": 0.8611111111111112,
+      "citation_checks": [
+        {
+          "chunk_id": "incident_response_playbook-chunk-2",
+          "document_id": "incident_response_playbook",
+          "claim_text": "Emergency Rollback Authority During an active outage, only the incident commander or a delegated release lead may authorize reverting a deployment.",
+          "support_score": 1.0,
+          "supported": true
+        },
+        {
+          "chunk_id": "incident_response_playbook-chunk-3",
+          "document_id": "incident_response_playbook",
+          "claim_text": "Scheduled Restart Checklist Planned maintenance restarts require a checklist review by the operations coordinator.",
+          "support_score": 1.0,
+          "supported": true
+        }
+      ]
+    },
+    {
+      "question": "What should take priority over writing the full incident timeline?",
+      "retrieval_strategy": "embedding_strong",
+      "retrieved_chunk_ids": [
+        "incident_response_playbook-chunk-4",
+        "incident_response_playbook-chunk-2",
+        "opensource_maintainer_guide-chunk-1",
+        "incident_response_playbook-chunk-3",
+        "incident_response_playbook-chunk-1"
+      ],
+      "retrieval_scores": {
+        "incident_response_playbook-chunk-4": 0.704,
+        "incident_response_playbook-chunk-2": 0.5926,
+        "opensource_maintainer_guide-chunk-1": 0.5868,
+        "incident_response_playbook-chunk-3": 0.581,
+        "incident_response_playbook-chunk-1": 0.5736
+      },
+      "retrieval_relevance": 0.2,
+      "retrieval_hit_rate": 1.0,
+      "retrieval_mrr": 0.5,
+      "retrieval_ndcg": 0.6309297535714575,
+      "citation_support": 1.0,
+      "answer_faithfulness": 0.8,
+      "citation_checks": [
+        {
+          "chunk_id": "incident_response_playbook-chunk-4",
+          "document_id": "incident_response_playbook",
+          "claim_text": "Writing the report should not delay immediate restoration work.",
+          "support_score": 1.0,
+          "supported": true
+        },
+        {
+          "chunk_id": "incident_response_playbook-chunk-2",
+          "document_id": "incident_response_playbook",
+          "claim_text": "The team should restore service before building a complete root-cause timeline.",
+          "support_score": 1.0,
+          "supported": true
+        }
+      ]
+    },
+    {
+      "question": "Who reviews a routine restart before planned maintenance begins?",
+      "retrieval_strategy": "embedding_strong",
+      "retrieved_chunk_ids": [
+        "incident_response_playbook-chunk-3",
+        "incident_response_playbook-chunk-1",
+        "public_operations_manual-chunk-3",
+        "incident_response_playbook-chunk-4",
+        "opensource_maintainer_guide-chunk-3"
+      ],
+      "retrieval_scores": {
+        "incident_response_playbook-chunk-3": 0.8182,
+        "incident_response_playbook-chunk-1": 0.6073,
+        "public_operations_manual-chunk-3": 0.5783,
+        "incident_response_playbook-chunk-4": 0.5775,
+        "opensource_maintainer_guide-chunk-3": 0.5433
+      },
+      "retrieval_relevance": 0.0,
+      "retrieval_hit_rate": 1.0,
+      "retrieval_mrr": 1.0,
+      "retrieval_ndcg": 1.0,
+      "citation_support": 1.0,
+      "answer_faithfulness": 0.868421052631579,
+      "citation_checks": [
+        {
+          "chunk_id": "incident_response_playbook-chunk-3",
+          "document_id": "incident_response_playbook",
+          "claim_text": "Scheduled Restart Checklist Planned maintenance restarts require a checklist review by the operations coordinator.",
+          "support_score": 1.0,
+          "supported": true
+        },
+        {
+          "chunk_id": "incident_response_playbook-chunk-1",
+          "document_id": "incident_response_playbook",
+          "claim_text": "On-Call Rotation Primary incident duty rotates among maintainers every seven days to spread operational load and reduce responder fatigue.",
+          "support_score": 1.0,
+          "supported": true
+        }
+      ]
+    },
+    {
+      "question": "Does the playbook require weekend pager coverage?",
+      "retrieval_strategy": "embedding_strong",
+      "retrieved_chunk_ids": [
+        "incident_response_playbook-chunk-1",
+        "incident_response_playbook-chunk-3",
+        "public_operations_manual-chunk-2",
+        "opensource_maintainer_guide-chunk-1",
+        "incident_response_playbook-chunk-4"
+      ],
+      "retrieval_scores": {
+        "incident_response_playbook-chunk-1": 0.6171,
+        "incident_response_playbook-chunk-3": 0.5824,
+        "public_operations_manual-chunk-2": 0.5349,
+        "opensource_maintainer_guide-chunk-1": 0.5306,
+        "incident_response_playbook-chunk-4": 0.5241
+      },
+      "retrieval_relevance": 1.0,
+      "retrieval_hit_rate": 0.0,
+      "retrieval_mrr": 0.0,
+      "retrieval_ndcg": 0.0,
+      "citation_support": 1.0,
+      "answer_faithfulness": 0.8387096774193549,
+      "citation_checks": [
+        {
+          "chunk_id": "incident_response_playbook-chunk-1",
+          "document_id": "incident_response_playbook",
+          "claim_text": "No single maintainer should own the pager continuously for more than one week.",
+          "support_score": 1.0,
+          "supported": true
+        },
+        {
+          "chunk_id": "incident_response_playbook-chunk-3",
+          "document_id": "incident_response_playbook",
+          "claim_text": "Scheduled Restart Checklist Planned maintenance restarts require a checklist review by the operations coordinator.",
+          "support_score": 1.0,
+          "supported": true
+        }
+      ]
+    }
+  ]
+}

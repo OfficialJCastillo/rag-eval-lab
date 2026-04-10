@@ -1,0 +1,11 @@
+Travel Reimbursement
+
+Employees can expense airfare, lodging, and ground transportation for approved business travel. Meal reimbursement requires itemized receipts, and alcohol is not reimbursable.
+
+Remote Work Equipment
+
+Staff members may request a monitor, keyboard, webcam, or headset for home office use. Equipment requests need manager approval before purchase and must be recorded in the asset inventory system.
+
+Procurement Review
+
+Software purchases above the department threshold require a procurement review. Requests that process customer data also need a security assessment before a contract is signed.

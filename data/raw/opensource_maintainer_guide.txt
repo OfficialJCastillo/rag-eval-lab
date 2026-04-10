@@ -1,0 +1,11 @@
+Security Reporting
+
+Potential security vulnerabilities should be sent privately to the maintainers by email. Reporters should avoid opening a public issue or publishing exploit details until a fix is available.
+
+Release Channels
+
+Teams that want predictable upgrades should use the long-term support release channel. The preview channel receives features earlier but may include breaking changes between minor versions.
+
+Issue Triage
+
+General bugs, feature requests, and documentation corrections belong in the public issue tracker. Maintainers label issues based on severity, reproducibility, and release impact.

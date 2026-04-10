@@ -1,0 +1,39 @@
+{
+  "comparison_id": "keyword-vs-semantic",
+  "strategies": [
+    {
+      "run_id": "baseline-keyword-retrieval",
+      "retrieval_strategy": "keyword",
+      "average_retrieval_relevance": 0.38888888888888884,
+      "average_retrieval_hit_rate": 1.0,
+      "average_citation_support": 1.0,
+      "average_answer_faithfulness": 0.8299455356483333
+    },
+    {
+      "run_id": "semantic-tfidf-retrieval",
+      "retrieval_strategy": "semantic",
+      "average_retrieval_relevance": 0.38888888888888884,
+      "average_retrieval_hit_rate": 1.0,
+      "average_citation_support": 1.0,
+      "average_answer_faithfulness": 0.8261743225747947
+    },
+    {
+      "run_id": "embedding-retrieval",
+      "retrieval_strategy": "embedding",
+      "average_retrieval_relevance": 0.3333333333333333,
+      "average_retrieval_hit_rate": 1.0,
+      "average_citation_support": 1.0,
+      "average_answer_faithfulness": 0.84461307779222
+    }
+  ],
+  "metric_deltas": {
+    "semantic_tfidf_retrieval_relevance_delta": 0.0,
+    "semantic_tfidf_retrieval_hit_rate_delta": 0.0,
+    "semantic_tfidf_citation_support_delta": 0.0,
+    "semantic_tfidf_answer_faithfulness_delta": -0.0038,
+    "embedding_retrieval_relevance_delta": -0.0556,
+    "embedding_retrieval_hit_rate_delta": 0.0,
+    "embedding_citation_support_delta": 0.0,
+    "embedding_answer_faithfulness_delta": 0.0147
+  }
+}

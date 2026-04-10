@@ -1,0 +1,15 @@
+On-Call Rotation
+
+Primary incident duty rotates among maintainers every seven days to spread operational load and reduce responder fatigue. No single maintainer should own the pager continuously for more than one week.
+
+Emergency Rollback Authority
+
+During an active outage, only the incident commander or a delegated release lead may authorize reverting a deployment. The team should restore service before building a complete root-cause timeline.
+
+Scheduled Restart Checklist
+
+Planned maintenance restarts require a checklist review by the operations coordinator. These routine restarts are separate from emergency rollback decisions during outages.
+
+Post-Incident Documentation
+
+After the service is stable, responders document customer impact, recovery timing, and follow-up actions in the incident report. Writing the report should not delay immediate restoration work.
