@@ -15,6 +15,18 @@ A framework for evaluating retrieval-augmented QA systems using citation support
 
 This repository is intentionally scoped to public or synthetic data to avoid employer IP overlap.
 
+## Benchmark Snapshot
+
+Latest benchmark comparison snapshot (text-only for portability):
+
+| Strategy | Hit Rate | MRR | nDCG | Faithfulness |
+| --- | ---: | ---: | ---: | ---: |
+| `keyword` | 0.9167 | 0.9167 | 0.9167 | 0.8360 |
+| `semantic` | 0.9167 | 0.8333 | 0.8552 | 0.8319 |
+| `embedding` | 0.9167 | 0.8750 | 0.8859 | 0.8531 |
+| `embedding_strong` | 0.9167 | 0.8750 | 0.8859 | 0.8509 |
+| `embedding_strong_rerank` | 0.9167 | 0.9167 | 0.9167 | 0.8436 |
+
 ## V1 Scope
 
 The first version is designed around one document family and a small benchmark set.
@@ -97,9 +109,25 @@ python scripts/render_benchmark_report.py
 
 ## API Endpoints
 
+- `GET /` (tiny demo UI)
 - `GET /health`
 - `POST /qa/query`
 - `POST /qa/benchmark`
+
+## Tiny Demo UI
+
+After starting the API server, open:
+
+```text
+http://127.0.0.1:8000/
+```
+
+The page provides a lightweight one-screen flow to:
+
+- enter a question
+- choose retrieval strategy
+- run grounded answer generation
+- inspect returned citations and unsupported claims
 
 ## Example Benchmark Output
 

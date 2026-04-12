@@ -1,3 +1,4 @@
+from app.api.demo_ui import render_demo_ui
 from app.schemas.models import BenchmarkRequest
 from app.schemas.models import BenchmarkResult
 from app.schemas.models import HealthResponse
@@ -9,6 +10,11 @@ from fastapi import APIRouter
 
 router = APIRouter()
 pipeline = RAGEvaluationPipeline()
+
+
+@router.get("/", include_in_schema=False)
+def demo_ui():
+    return render_demo_ui()
 
 
 @router.get("/health", response_model=HealthResponse)
@@ -24,4 +30,3 @@ def run_query(request: QueryRequest) -> QueryResponse:
 @router.post("/qa/benchmark", response_model=BenchmarkResult)
 def run_benchmark(request: BenchmarkRequest) -> BenchmarkResult:
     return pipeline.run_benchmark(request)
-
