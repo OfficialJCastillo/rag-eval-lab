@@ -17,7 +17,9 @@ This repository is intentionally scoped to public or synthetic data to avoid emp
 
 ## Benchmark Snapshot
 
-Latest benchmark comparison snapshot (text-only for portability):
+Latest benchmark comparison snapshot (visual + table):
+
+![Benchmark snapshot for retrieval strategies](docs/benchmark-snapshot.svg)
 
 | Strategy | Hit Rate | MRR | nDCG | Faithfulness |
 | --- | ---: | ---: | ---: | ---: |
@@ -180,11 +182,9 @@ The comparison script writes a second artifact like:
 }
 ```
 
-## Benchmark Snapshot
+## Benchmark Snapshot Details
 
-Current comparison summary from `results/retrieval-backend-comparison.json`:
-
-A rendered markdown version of the latest benchmark summary is available at `results/benchmark-report.md`.
+Current comparison summary from `results/retrieval-backend-comparison.json` and rendered markdown report in `results/benchmark-report.md`:
 
 | Strategy | Hit Rate | MRR | nDCG | Faithfulness |
 | --- | ---: | ---: | ---: | ---: |
