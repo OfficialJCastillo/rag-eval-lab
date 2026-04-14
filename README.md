@@ -109,6 +109,12 @@ Render a markdown benchmark report:
 python scripts/render_benchmark_report.py
 ```
 
+Render the README benchmark snapshot SVG:
+
+```bash
+python scripts/render_benchmark_snapshot_svg.py
+```
+
 ## API Endpoints
 
 - `GET /` (tiny demo UI)
