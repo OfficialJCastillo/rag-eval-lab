@@ -16,20 +16,34 @@ def _bar_width(value: float) -> int:
     return int(round(value * 120))
 
 
-def _row(group_offset_y: int, row_class: str, strategy: dict) -> str:
+def _value_x(index: int) -> tuple[int, int, int, int]:
+    if index == 0:
+        return (357, 507, 657, 797)
+    if index == 1:
+        return (357, 497, 650, 797)
+    if index in (2, 3):
+        return (357, 502, 653, 799)
+    return (357, 507, 657, 798)
+
+
+def _row(index: int, strategy: dict) -> str:
     hit = strategy["average_retrieval_hit_rate"]
     mrr = strategy["average_retrieval_mrr"]
     ndcg = strategy["average_retrieval_ndcg"]
     faith = strategy["average_answer_faithfulness"]
     label = strategy["retrieval_strategy"]
+    y_offset = index * 56
+    row_class = "row" if index % 2 == 0 else "rowAlt"
+    hit_x, mrr_x, ndcg_x, faith_x = _value_x(index)
+
     return f"""
-  <g transform=\"translate(0,{group_offset_y})\">
+  <g transform=\"translate(0,{y_offset})\">
     <rect class=\"{row_class}\" x=\"20\" y=\"108\" width=\"940\" height=\"52\" rx=\"8\"/>
     <text class=\"label\" x=\"30\" y=\"138\">{label}</text>
-    <rect class=\"barHit\" x=\"240\" y=\"124\" width=\"{_bar_width(hit)}\" height=\"12\" rx=\"6\"/><text class=\"value\" x=\"357\" y=\"135\">{hit:.4f}</text>
-    <rect class=\"barMrr\" x=\"390\" y=\"124\" width=\"{_bar_width(mrr)}\" height=\"12\" rx=\"6\"/><text class=\"value\" x=\"507\" y=\"135\">{mrr:.4f}</text>
-    <rect class=\"barNdcg\" x=\"540\" y=\"124\" width=\"{_bar_width(ndcg)}\" height=\"12\" rx=\"6\"/><text class=\"value\" x=\"657\" y=\"135\">{ndcg:.4f}</text>
-    <rect class=\"barFaith\" x=\"690\" y=\"124\" width=\"{_bar_width(faith)}\" height=\"12\" rx=\"6\"/><text class=\"value\" x=\"798\" y=\"135\">{faith:.4f}</text>
+    <rect class=\"barHit\" x=\"240\" y=\"124\" width=\"{_bar_width(hit)}\" height=\"12\" rx=\"6\"/><text class=\"value\" x=\"{hit_x}\" y=\"135\">{hit:.4f}</text>
+    <rect class=\"barMrr\" x=\"390\" y=\"124\" width=\"{_bar_width(mrr)}\" height=\"12\" rx=\"6\"/><text class=\"value\" x=\"{mrr_x}\" y=\"135\">{mrr:.4f}</text>
+    <rect class=\"barNdcg\" x=\"540\" y=\"124\" width=\"{_bar_width(ndcg)}\" height=\"12\" rx=\"6\"/><text class=\"value\" x=\"{ndcg_x}\" y=\"135\">{ndcg:.4f}</text>
+    <rect class=\"barFaith\" x=\"690\" y=\"124\" width=\"{_bar_width(faith)}\" height=\"12\" rx=\"6\"/><text class=\"value\" x=\"{faith_x}\" y=\"135\">{faith:.4f}</text>
   </g>
 """.rstrip()
 
@@ -37,10 +51,7 @@ def _row(group_offset_y: int, row_class: str, strategy: dict) -> str:
 def main() -> None:
     comparison = json.loads(RESULTS_PATH.read_text(encoding="utf-8"))
     strategies = comparison["strategies"]
-
-    rows: list[str] = []
-    for index, strategy in enumerate(strategies):
-        rows.append(_row(index * 56, "row" if index % 2 == 0 else "rowAlt", strategy))
+    rows = [_row(index, strategy) for index, strategy in enumerate(strategies)]
 
     svg = f"""<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"980\" height=\"420\" viewBox=\"0 0 980 420\" role=\"img\" aria-labelledby=\"title desc\">
   <title id=\"title\">rag-eval-lab benchmark snapshot</title>
@@ -62,7 +73,7 @@ def main() -> None:
 
   <rect class=\"bg\" x=\"0\" y=\"0\" width=\"980\" height=\"420\" rx=\"14\"/>
   <text class=\"title\" x=\"30\" y=\"42\">rag-eval-lab · retrieval benchmark snapshot</text>
-  <text class=\"subtitle\" x=\"30\" y=\"64\">Source: results/retrieval-backend-comparison.json</text>
+  <text class=\"subtitle\" x=\"30\" y=\"64\">Source: results/retrieval-backend-comparison.json (April 2026)</text>
 
   <text class=\"header\" x=\"30\" y=\"95\">Strategy</text>
   <text class=\"header\" x=\"240\" y=\"95\">Hit Rate</text>
