@@ -1,69 +1,74 @@
-<!-- AUTO-GENERATED FILE: run `python scripts/render_benchmark_snapshot_svg.py` -->
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="440" viewBox="0 0 1200 440" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="420" viewBox="0 0 980 420" role="img" aria-labelledby="title desc">
   <title id="title">rag-eval-lab benchmark snapshot</title>
   <desc id="desc">Comparison of hit rate, MRR, nDCG, and faithfulness for retrieval strategies.</desc>
   <style>
-    .bg { fill: #020b26; }
-    .panel { fill: #0b1737; }
-    .rowA { fill: #0e1d41; }
-    .rowB { fill: #0b1938; }
-    .title { fill: #f8fafc; font: 700 44px 'Inter', 'Segoe UI', sans-serif; }
-    .subtitle { fill: #cbd5e1; font: 400 28px 'Inter', 'Segoe UI', sans-serif; }
-    .header { fill: #e2e8f0; font: 700 24px 'Inter', 'Segoe UI', sans-serif; }
-    .label { fill: #a5b4fc; font: 700 24px 'Inter', 'Segoe UI', sans-serif; }
-    .value { fill: #f8fafc; font: 700 22px 'Inter', 'Segoe UI', sans-serif; }
-    .track { fill: #1e293b; }
-    .hit { fill: #22c55e; }
-    .mrr { fill: #60a5fa; }
-    .ndcg { fill: #a78bfa; }
-    .faith { fill: #f59e0b; }
+    .bg { fill: #0b1020; }
+    .title { fill: #f8fafc; font: 700 24px 'Inter', 'Segoe UI', sans-serif; }
+    .subtitle { fill: #cbd5e1; font: 400 14px 'Inter', 'Segoe UI', sans-serif; }
+    .header { fill: #e2e8f0; font: 700 13px 'Inter', 'Segoe UI', sans-serif; }
+    .label { fill: #94a3b8; font: 600 12px 'Inter', 'Segoe UI', sans-serif; }
+    .value { fill: #f8fafc; font: 600 12px 'Inter', 'Segoe UI', sans-serif; }
+    .row { fill: #111827; }
+    .rowAlt { fill: #0f172a; }
+    .barHit { fill: #22c55e; }
+    .barMrr { fill: #60a5fa; }
+    .barNdcg { fill: #a78bfa; }
+    .barFaith { fill: #f59e0b; }
   </style>
 
-  <rect class="bg" x="0" y="0" width="1200" height="440" rx="16"/>
-  <rect class="panel" x="18" y="18" width="1164" height="404" rx="14"/>
+  <rect class="bg" x="0" y="0" width="980" height="420" rx="14"/>
+  <text class="title" x="30" y="42">rag-eval-lab · retrieval benchmark snapshot</text>
+  <text class="subtitle" x="30" y="64">Source: results/retrieval-backend-comparison.json</text>
 
-  <text class="title" x="36" y="62">rag-eval-lab · retrieval benchmark snapshot</text>
-  <text class="subtitle" x="36" y="95">Source: results/retrieval-backend-comparison.json</text>
-
-  <text class="header" x="36" y="133">Strategy</text>
-  <text class="header" x="290" y="133">Hit Rate</text>
-  <text class="header" x="515" y="133">MRR</text>
-  <text class="header" x="740" y="133">nDCG</text>
-  <text class="header" x="965" y="133">Faithfulness</text>
+  <text class="header" x="30" y="95">Strategy</text>
+  <text class="header" x="240" y="95">Hit Rate</text>
+  <text class="header" x="390" y="95">MRR</text>
+  <text class="header" x="540" y="95">nDCG</text>
+  <text class="header" x="690" y="95">Faithfulness</text>
 
 
-  <rect class="rowA" x="24" y="148" width="1152" height="50" rx="10"/>
-  <text class="label" x="36" y="180">keyword</text>
-  <rect class="track" x="290" y="163" width="120" height="14" rx="7"/><rect class="hit" x="290" y="163" width="110" height="14" rx="7"/><text class="value" x="418" y="176">0.9167</text>
-  <rect class="track" x="515" y="163" width="120" height="14" rx="7"/><rect class="mrr" x="515" y="163" width="110" height="14" rx="7"/><text class="value" x="643" y="176">0.9167</text>
-  <rect class="track" x="740" y="163" width="120" height="14" rx="7"/><rect class="ndcg" x="740" y="163" width="110" height="14" rx="7"/><text class="value" x="868" y="176">0.9167</text>
-  <rect class="track" x="965" y="163" width="120" height="14" rx="7"/><rect class="faith" x="965" y="163" width="100" height="14" rx="7"/><text class="value" x="1093" y="176">0.8360</text>
+  <g transform="translate(0,0)">
+    <rect class="row" x="20" y="108" width="940" height="52" rx="8"/>
+    <text class="label" x="30" y="138">keyword</text>
+    <rect class="barHit" x="240" y="124" width="110" height="12" rx="6"/><text class="value" x="357" y="135">0.9167</text>
+    <rect class="barMrr" x="390" y="124" width="110" height="12" rx="6"/><text class="value" x="507" y="135">0.9167</text>
+    <rect class="barNdcg" x="540" y="124" width="110" height="12" rx="6"/><text class="value" x="657" y="135">0.9167</text>
+    <rect class="barFaith" x="690" y="124" width="100" height="12" rx="6"/><text class="value" x="798" y="135">0.8360</text>
+  </g>
 
-  <rect class="rowB" x="24" y="204" width="1152" height="50" rx="10"/>
-  <text class="label" x="36" y="236">semantic</text>
-  <rect class="track" x="290" y="219" width="120" height="14" rx="7"/><rect class="hit" x="290" y="219" width="110" height="14" rx="7"/><text class="value" x="418" y="232">0.9167</text>
-  <rect class="track" x="515" y="219" width="120" height="14" rx="7"/><rect class="mrr" x="515" y="219" width="100" height="14" rx="7"/><text class="value" x="643" y="232">0.8333</text>
-  <rect class="track" x="740" y="219" width="120" height="14" rx="7"/><rect class="ndcg" x="740" y="219" width="103" height="14" rx="7"/><text class="value" x="868" y="232">0.8552</text>
-  <rect class="track" x="965" y="219" width="120" height="14" rx="7"/><rect class="faith" x="965" y="219" width="100" height="14" rx="7"/><text class="value" x="1093" y="232">0.8319</text>
+  <g transform="translate(0,56)">
+    <rect class="rowAlt" x="20" y="108" width="940" height="52" rx="8"/>
+    <text class="label" x="30" y="138">semantic</text>
+    <rect class="barHit" x="240" y="124" width="110" height="12" rx="6"/><text class="value" x="357" y="135">0.9167</text>
+    <rect class="barMrr" x="390" y="124" width="100" height="12" rx="6"/><text class="value" x="507" y="135">0.8333</text>
+    <rect class="barNdcg" x="540" y="124" width="103" height="12" rx="6"/><text class="value" x="657" y="135">0.8552</text>
+    <rect class="barFaith" x="690" y="124" width="100" height="12" rx="6"/><text class="value" x="798" y="135">0.8319</text>
+  </g>
 
-  <rect class="rowA" x="24" y="260" width="1152" height="50" rx="10"/>
-  <text class="label" x="36" y="292">embedding</text>
-  <rect class="track" x="290" y="275" width="120" height="14" rx="7"/><rect class="hit" x="290" y="275" width="110" height="14" rx="7"/><text class="value" x="418" y="288">0.9167</text>
-  <rect class="track" x="515" y="275" width="120" height="14" rx="7"/><rect class="mrr" x="515" y="275" width="105" height="14" rx="7"/><text class="value" x="643" y="288">0.8750</text>
-  <rect class="track" x="740" y="275" width="120" height="14" rx="7"/><rect class="ndcg" x="740" y="275" width="106" height="14" rx="7"/><text class="value" x="868" y="288">0.8859</text>
-  <rect class="track" x="965" y="275" width="120" height="14" rx="7"/><rect class="faith" x="965" y="275" width="102" height="14" rx="7"/><text class="value" x="1093" y="288">0.8531</text>
+  <g transform="translate(0,112)">
+    <rect class="row" x="20" y="108" width="940" height="52" rx="8"/>
+    <text class="label" x="30" y="138">embedding</text>
+    <rect class="barHit" x="240" y="124" width="110" height="12" rx="6"/><text class="value" x="357" y="135">0.9167</text>
+    <rect class="barMrr" x="390" y="124" width="105" height="12" rx="6"/><text class="value" x="507" y="135">0.8750</text>
+    <rect class="barNdcg" x="540" y="124" width="106" height="12" rx="6"/><text class="value" x="657" y="135">0.8859</text>
+    <rect class="barFaith" x="690" y="124" width="102" height="12" rx="6"/><text class="value" x="798" y="135">0.8531</text>
+  </g>
 
-  <rect class="rowB" x="24" y="316" width="1152" height="50" rx="10"/>
-  <text class="label" x="36" y="348">embedding_strong</text>
-  <rect class="track" x="290" y="331" width="120" height="14" rx="7"/><rect class="hit" x="290" y="331" width="110" height="14" rx="7"/><text class="value" x="418" y="344">0.9167</text>
-  <rect class="track" x="515" y="331" width="120" height="14" rx="7"/><rect class="mrr" x="515" y="331" width="105" height="14" rx="7"/><text class="value" x="643" y="344">0.8750</text>
-  <rect class="track" x="740" y="331" width="120" height="14" rx="7"/><rect class="ndcg" x="740" y="331" width="106" height="14" rx="7"/><text class="value" x="868" y="344">0.8859</text>
-  <rect class="track" x="965" y="331" width="120" height="14" rx="7"/><rect class="faith" x="965" y="331" width="102" height="14" rx="7"/><text class="value" x="1093" y="344">0.8509</text>
+  <g transform="translate(0,168)">
+    <rect class="rowAlt" x="20" y="108" width="940" height="52" rx="8"/>
+    <text class="label" x="30" y="138">embedding_strong</text>
+    <rect class="barHit" x="240" y="124" width="110" height="12" rx="6"/><text class="value" x="357" y="135">0.9167</text>
+    <rect class="barMrr" x="390" y="124" width="105" height="12" rx="6"/><text class="value" x="507" y="135">0.8750</text>
+    <rect class="barNdcg" x="540" y="124" width="106" height="12" rx="6"/><text class="value" x="657" y="135">0.8859</text>
+    <rect class="barFaith" x="690" y="124" width="102" height="12" rx="6"/><text class="value" x="798" y="135">0.8509</text>
+  </g>
 
-  <rect class="rowA" x="24" y="372" width="1152" height="50" rx="10"/>
-  <text class="label" x="36" y="404">embedding_strong_rerank</text>
-  <rect class="track" x="290" y="387" width="120" height="14" rx="7"/><rect class="hit" x="290" y="387" width="110" height="14" rx="7"/><text class="value" x="418" y="400">0.9167</text>
-  <rect class="track" x="515" y="387" width="120" height="14" rx="7"/><rect class="mrr" x="515" y="387" width="110" height="14" rx="7"/><text class="value" x="643" y="400">0.9167</text>
-  <rect class="track" x="740" y="387" width="120" height="14" rx="7"/><rect class="ndcg" x="740" y="387" width="110" height="14" rx="7"/><text class="value" x="868" y="400">0.9167</text>
-  <rect class="track" x="965" y="387" width="120" height="14" rx="7"/><rect class="faith" x="965" y="387" width="101" height="14" rx="7"/><text class="value" x="1093" y="400">0.8436</text>
+  <g transform="translate(0,224)">
+    <rect class="row" x="20" y="108" width="940" height="52" rx="8"/>
+    <text class="label" x="30" y="138">embedding_strong_rerank</text>
+    <rect class="barHit" x="240" y="124" width="110" height="12" rx="6"/><text class="value" x="357" y="135">0.9167</text>
+    <rect class="barMrr" x="390" y="124" width="110" height="12" rx="6"/><text class="value" x="507" y="135">0.9167</text>
+    <rect class="barNdcg" x="540" y="124" width="110" height="12" rx="6"/><text class="value" x="657" y="135">0.9167</text>
+    <rect class="barFaith" x="690" y="124" width="101" height="12" rx="6"/><text class="value" x="798" y="135">0.8436</text>
+  </g>
 </svg>

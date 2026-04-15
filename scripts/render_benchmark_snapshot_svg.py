@@ -16,14 +16,21 @@ def _bar_width(value: float) -> int:
     return int(round(value * 120))
 
 
-def _row(y: int, row_class: str, label: str, hit: float, mrr: float, ndcg: float, faith: float) -> str:
+def _row(group_offset_y: int, row_class: str, strategy: dict) -> str:
+    hit = strategy["average_retrieval_hit_rate"]
+    mrr = strategy["average_retrieval_mrr"]
+    ndcg = strategy["average_retrieval_ndcg"]
+    faith = strategy["average_answer_faithfulness"]
+    label = strategy["retrieval_strategy"]
     return f"""
-  <rect class=\"{row_class}\" x=\"24\" y=\"{y}\" width=\"1152\" height=\"50\" rx=\"10\"/>
-  <text class=\"label\" x=\"36\" y=\"{y + 32}\">{label}</text>
-  <rect class=\"track\" x=\"290\" y=\"{y + 15}\" width=\"120\" height=\"14\" rx=\"7\"/><rect class=\"hit\" x=\"290\" y=\"{y + 15}\" width=\"{_bar_width(hit)}\" height=\"14\" rx=\"7\"/><text class=\"value\" x=\"418\" y=\"{y + 28}\">{hit:.4f}</text>
-  <rect class=\"track\" x=\"515\" y=\"{y + 15}\" width=\"120\" height=\"14\" rx=\"7\"/><rect class=\"mrr\" x=\"515\" y=\"{y + 15}\" width=\"{_bar_width(mrr)}\" height=\"14\" rx=\"7\"/><text class=\"value\" x=\"643\" y=\"{y + 28}\">{mrr:.4f}</text>
-  <rect class=\"track\" x=\"740\" y=\"{y + 15}\" width=\"120\" height=\"14\" rx=\"7\"/><rect class=\"ndcg\" x=\"740\" y=\"{y + 15}\" width=\"{_bar_width(ndcg)}\" height=\"14\" rx=\"7\"/><text class=\"value\" x=\"868\" y=\"{y + 28}\">{ndcg:.4f}</text>
-  <rect class=\"track\" x=\"965\" y=\"{y + 15}\" width=\"120\" height=\"14\" rx=\"7\"/><rect class=\"faith\" x=\"965\" y=\"{y + 15}\" width=\"{_bar_width(faith)}\" height=\"14\" rx=\"7\"/><text class=\"value\" x=\"1093\" y=\"{y + 28}\">{faith:.4f}</text>
+  <g transform=\"translate(0,{group_offset_y})\">
+    <rect class=\"{row_class}\" x=\"20\" y=\"108\" width=\"940\" height=\"52\" rx=\"8\"/>
+    <text class=\"label\" x=\"30\" y=\"138\">{label}</text>
+    <rect class=\"barHit\" x=\"240\" y=\"124\" width=\"{_bar_width(hit)}\" height=\"12\" rx=\"6\"/><text class=\"value\" x=\"357\" y=\"135\">{hit:.4f}</text>
+    <rect class=\"barMrr\" x=\"390\" y=\"124\" width=\"{_bar_width(mrr)}\" height=\"12\" rx=\"6\"/><text class=\"value\" x=\"507\" y=\"135\">{mrr:.4f}</text>
+    <rect class=\"barNdcg\" x=\"540\" y=\"124\" width=\"{_bar_width(ndcg)}\" height=\"12\" rx=\"6\"/><text class=\"value\" x=\"657\" y=\"135\">{ndcg:.4f}</text>
+    <rect class=\"barFaith\" x=\"690\" y=\"124\" width=\"{_bar_width(faith)}\" height=\"12\" rx=\"6\"/><text class=\"value\" x=\"798\" y=\"135\">{faith:.4f}</text>
+  </g>
 """.rstrip()
 
 
@@ -31,55 +38,37 @@ def main() -> None:
     comparison = json.loads(RESULTS_PATH.read_text(encoding="utf-8"))
     strategies = comparison["strategies"]
 
-    rows = []
-    row_y = 148
-    for i, strategy in enumerate(strategies):
-        row_class = "rowA" if i % 2 == 0 else "rowB"
-        rows.append(
-            _row(
-                y=row_y,
-                row_class=row_class,
-                label=strategy["retrieval_strategy"],
-                hit=strategy["average_retrieval_hit_rate"],
-                mrr=strategy["average_retrieval_mrr"],
-                ndcg=strategy["average_retrieval_ndcg"],
-                faith=strategy["average_answer_faithfulness"],
-            )
-        )
-        row_y += 56
+    rows: list[str] = []
+    for index, strategy in enumerate(strategies):
+        rows.append(_row(index * 56, "row" if index % 2 == 0 else "rowAlt", strategy))
 
-    svg = f"""<!-- AUTO-GENERATED FILE: run `python scripts/render_benchmark_snapshot_svg.py` -->
-<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"1200\" height=\"440\" viewBox=\"0 0 1200 440\" role=\"img\" aria-labelledby=\"title desc\">
+    svg = f"""<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"980\" height=\"420\" viewBox=\"0 0 980 420\" role=\"img\" aria-labelledby=\"title desc\">
   <title id=\"title\">rag-eval-lab benchmark snapshot</title>
   <desc id=\"desc\">Comparison of hit rate, MRR, nDCG, and faithfulness for retrieval strategies.</desc>
   <style>
-    .bg {{ fill: #020b26; }}
-    .panel {{ fill: #0b1737; }}
-    .rowA {{ fill: #0e1d41; }}
-    .rowB {{ fill: #0b1938; }}
-    .title {{ fill: #f8fafc; font: 700 44px 'Inter', 'Segoe UI', sans-serif; }}
-    .subtitle {{ fill: #cbd5e1; font: 400 28px 'Inter', 'Segoe UI', sans-serif; }}
-    .header {{ fill: #e2e8f0; font: 700 24px 'Inter', 'Segoe UI', sans-serif; }}
-    .label {{ fill: #a5b4fc; font: 700 24px 'Inter', 'Segoe UI', sans-serif; }}
-    .value {{ fill: #f8fafc; font: 700 22px 'Inter', 'Segoe UI', sans-serif; }}
-    .track {{ fill: #1e293b; }}
-    .hit {{ fill: #22c55e; }}
-    .mrr {{ fill: #60a5fa; }}
-    .ndcg {{ fill: #a78bfa; }}
-    .faith {{ fill: #f59e0b; }}
+    .bg {{ fill: #0b1020; }}
+    .title {{ fill: #f8fafc; font: 700 24px 'Inter', 'Segoe UI', sans-serif; }}
+    .subtitle {{ fill: #cbd5e1; font: 400 14px 'Inter', 'Segoe UI', sans-serif; }}
+    .header {{ fill: #e2e8f0; font: 700 13px 'Inter', 'Segoe UI', sans-serif; }}
+    .label {{ fill: #94a3b8; font: 600 12px 'Inter', 'Segoe UI', sans-serif; }}
+    .value {{ fill: #f8fafc; font: 600 12px 'Inter', 'Segoe UI', sans-serif; }}
+    .row {{ fill: #111827; }}
+    .rowAlt {{ fill: #0f172a; }}
+    .barHit {{ fill: #22c55e; }}
+    .barMrr {{ fill: #60a5fa; }}
+    .barNdcg {{ fill: #a78bfa; }}
+    .barFaith {{ fill: #f59e0b; }}
   </style>
 
-  <rect class=\"bg\" x=\"0\" y=\"0\" width=\"1200\" height=\"440\" rx=\"16\"/>
-  <rect class=\"panel\" x=\"18\" y=\"18\" width=\"1164\" height=\"404\" rx=\"14\"/>
+  <rect class=\"bg\" x=\"0\" y=\"0\" width=\"980\" height=\"420\" rx=\"14\"/>
+  <text class=\"title\" x=\"30\" y=\"42\">rag-eval-lab · retrieval benchmark snapshot</text>
+  <text class=\"subtitle\" x=\"30\" y=\"64\">Source: results/retrieval-backend-comparison.json</text>
 
-  <text class=\"title\" x=\"36\" y=\"62\">rag-eval-lab · retrieval benchmark snapshot</text>
-  <text class=\"subtitle\" x=\"36\" y=\"95\">Source: results/retrieval-backend-comparison.json</text>
-
-  <text class=\"header\" x=\"36\" y=\"133\">Strategy</text>
-  <text class=\"header\" x=\"290\" y=\"133\">Hit Rate</text>
-  <text class=\"header\" x=\"515\" y=\"133\">MRR</text>
-  <text class=\"header\" x=\"740\" y=\"133\">nDCG</text>
-  <text class=\"header\" x=\"965\" y=\"133\">Faithfulness</text>
+  <text class=\"header\" x=\"30\" y=\"95\">Strategy</text>
+  <text class=\"header\" x=\"240\" y=\"95\">Hit Rate</text>
+  <text class=\"header\" x=\"390\" y=\"95\">MRR</text>
+  <text class=\"header\" x=\"540\" y=\"95\">nDCG</text>
+  <text class=\"header\" x=\"690\" y=\"95\">Faithfulness</text>
 
 {chr(10).join(rows)}
 </svg>
