@@ -115,6 +115,8 @@ Render the README benchmark snapshot SVG:
 python scripts/render_benchmark_snapshot_svg.py
 ```
 
+If `docs/benchmark-snapshot.svg` ever conflicts during a merge, regenerate it from the JSON source with the command above and keep the re-rendered output.
+
 ## API Endpoints
 
 - `GET /` (tiny demo UI)

@@ -48,7 +48,8 @@ def main() -> None:
         )
         row_y += 56
 
-    svg = f"""<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"1200\" height=\"440\" viewBox=\"0 0 1200 440\" role=\"img\" aria-labelledby=\"title desc\">
+    svg = f"""<!-- AUTO-GENERATED FILE: run `python scripts/render_benchmark_snapshot_svg.py` -->
+<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"1200\" height=\"440\" viewBox=\"0 0 1200 440\" role=\"img\" aria-labelledby=\"title desc\">
   <title id=\"title\">rag-eval-lab benchmark snapshot</title>
   <desc id=\"desc\">Comparison of hit rate, MRR, nDCG, and faithfulness for retrieval strategies.</desc>
   <style>
