@@ -1,5 +1,7 @@
 # rag-eval-lab
 
+[![CI](https://github.com/OfficialJCastillo/rag-eval-lab/actions/workflows/ci.yml/badge.svg)](https://github.com/OfficialJCastillo/rag-eval-lab/actions/workflows/ci.yml)
+
 A framework for evaluating retrieval-augmented QA systems using citation support, retrieval relevance, and answer faithfulness on public document corpora.
 
 ## Overview
