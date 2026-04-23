@@ -111,6 +111,14 @@ Render a markdown benchmark report:
 python scripts/render_benchmark_report.py
 ```
 
+Run the benchmark regression guard:
+
+```bash
+python -m pytest tests/test_benchmark_regression.py
+```
+
+The regression guard checks the committed benchmark artifacts in `results/` against minimum floors for hit rate, `MRR`, `nDCG`, citation support, and faithfulness. It is intentionally fast and deterministic for CI; rerun the full benchmark scripts when changing retrieval behavior or refreshing artifact values.
+
 ## API Endpoints
 
 - `GET /` (tiny demo UI)
@@ -201,6 +209,7 @@ Current comparison summary from `results/retrieval-backend-comparison.json` and 
 - `keyword` is a strong baseline on this public-document benchmark and remains hard to beat on rank-sensitive retrieval metrics.
 - Dense retrieval alone improves answer faithfulness slightly, but both embedding backends still trail the lexical baseline on `MRR` and `nDCG`.
 - Adding a late-interaction reranker closes that ranking gap and matches the lexical baseline on `MRR` and `nDCG` without changing the benchmark corpus.
+- The committed benchmark regression test treats meaningful drops below the current floor values as review-worthy drift, even if the application smoke tests still pass.
 
 ## Example Cases
 
