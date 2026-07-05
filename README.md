@@ -19,7 +19,7 @@ This repository is intentionally scoped to public or synthetic data to avoid emp
 
 ## Benchmark Snapshot
 
-Latest benchmark comparison snapshot (visual + table):
+Latest benchmark comparison snapshot (visual + table), sourced from `results/retrieval-backend-comparison.json` and `results/benchmark-report.md`:
 
 ![Benchmark snapshot for retrieval strategies](docs/benchmark-snapshot.svg)
 
@@ -110,6 +110,14 @@ Render a markdown benchmark report:
 ```bash
 python scripts/render_benchmark_report.py
 ```
+
+Render the README benchmark snapshot SVG:
+
+```bash
+python scripts/render_benchmark_snapshot_svg.py
+```
+
+If `docs/benchmark-snapshot.svg` ever conflicts during a merge, regenerate it from the JSON source with the command above and keep the re-rendered output.
 
 Run the benchmark regression guard:
 
