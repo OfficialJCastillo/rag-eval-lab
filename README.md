@@ -111,6 +111,12 @@ Render a markdown benchmark report:
 python scripts/render_benchmark_report.py
 ```
 
+Render a standalone HTML benchmark report:
+
+```bash
+python scripts/render_benchmark_report_html.py
+```
+
 Render the README benchmark snapshot SVG:
 
 ```bash
@@ -202,7 +208,7 @@ The comparison script writes a second artifact like:
 
 ## Benchmark Snapshot Details
 
-Current comparison summary from `results/retrieval-backend-comparison.json` and rendered markdown report in `results/benchmark-report.md`:
+Current comparison summary from `results/retrieval-backend-comparison.json`, rendered markdown report in `results/benchmark-report.md`, and standalone HTML report in `results/benchmark-report.html`:
 
 | Strategy | Hit Rate | MRR | nDCG | Faithfulness |
 | --- | ---: | ---: | ---: | ---: |
@@ -250,4 +256,4 @@ The starter corpus now mixes university policy text, an open-source maintainer g
 - add model-backed embedding retrieval backend
 - compare chunking strategies
 - add richer faithfulness and hallucination checks
-- generate markdown and HTML benchmark reports
+- add interactive benchmark report drill-downs
