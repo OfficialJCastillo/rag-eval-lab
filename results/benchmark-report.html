@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>rag-eval-lab Benchmark Report</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #18212f;
+      --muted: #607083;
+      --line: #d9e1ea;
+      --panel: #f7f9fc;
+      --accent: #126c7a;
+      --good: #14764d;
+      --bad: #b33636;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: #ffffff;
+      font: 16px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    main {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 40px 24px 56px;
+    }
+    header {
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 28px;
+      padding-bottom: 20px;
+    }
+    h1, h2 { line-height: 1.15; margin: 0; }
+    h1 { font-size: 34px; }
+    h2 { font-size: 22px; margin-top: 34px; }
+    p { color: var(--muted); margin: 10px 0 0; }
+    code {
+      background: #eef3f7;
+      border-radius: 4px;
+      padding: 1px 5px;
+    }
+    .snapshot {
+      display: block;
+      max-width: 100%;
+      height: auto;
+      margin: 22px 0 30px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 14px;
+    }
+    th, td {
+      border-bottom: 1px solid var(--line);
+      padding: 10px 12px;
+      text-align: right;
+      vertical-align: top;
+    }
+    th:first-child, td:first-child { text-align: left; }
+    th {
+      background: var(--panel);
+      color: #334155;
+      font-size: 13px;
+      text-transform: uppercase;
+    }
+    .delta-positive { color: var(--good); font-weight: 700; }
+    .delta-negative { color: var(--bad); font-weight: 700; }
+    .delta-neutral { color: var(--muted); }
+    .notes {
+      display: grid;
+      gap: 12px;
+      margin-top: 14px;
+    }
+    .note {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px 16px;
+      background: #ffffff;
+    }
+    .note strong { color: var(--accent); }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>rag-eval-lab Benchmark Report</h1>
+      <p>Generated from <code>results/retrieval-backend-comparison.json</code> and per-strategy run artifacts.</p>
+    </header>
+
+    <img class="snapshot" src="../docs/benchmark-snapshot.svg" alt="Benchmark snapshot for retrieval strategies">
+
+    <section>
+      <h2>Strategy Summary</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Strategy</th>
+            <th>Hit Rate</th>
+            <th>MRR</th>
+            <th>nDCG</th>
+            <th>Faithfulness</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>keyword</code></td>
+            <td>0.9167</td>
+            <td>0.9167</td>
+            <td>0.9167</td>
+            <td>0.8360</td>
+          </tr>
+          <tr>
+            <td><code>semantic</code></td>
+            <td>0.9167</td>
+            <td>0.8333</td>
+            <td>0.8552</td>
+            <td>0.8319</td>
+          </tr>
+          <tr>
+            <td><code>embedding</code></td>
+            <td>0.9167</td>
+            <td>0.8750</td>
+            <td>0.8859</td>
+            <td>0.8531</td>
+          </tr>
+          <tr>
+            <td><code>embedding_strong</code></td>
+            <td>0.9167</td>
+            <td>0.8750</td>
+            <td>0.8859</td>
+            <td>0.8509</td>
+          </tr>
+          <tr>
+            <td><code>embedding_strong_rerank</code></td>
+            <td>0.9167</td>
+            <td>0.9167</td>
+            <td>0.9167</td>
+            <td>0.8436</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>Deltas vs Keyword Baseline</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Strategy</th>
+            <th>Hit Rate</th>
+            <th>MRR</th>
+            <th>nDCG</th>
+            <th>Faithfulness</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>semantic</code></td>
+            <td class="delta-neutral">0.0000</td>
+            <td class="delta-negative">-0.0833</td>
+            <td class="delta-negative">-0.0615</td>
+            <td class="delta-negative">-0.0042</td>
+          </tr>
+          <tr>
+            <td><code>embedding</code></td>
+            <td class="delta-neutral">0.0000</td>
+            <td class="delta-negative">-0.0417</td>
+            <td class="delta-negative">-0.0308</td>
+            <td class="delta-positive">+0.0171</td>
+          </tr>
+          <tr>
+            <td><code>embedding_strong</code></td>
+            <td class="delta-neutral">0.0000</td>
+            <td class="delta-negative">-0.0417</td>
+            <td class="delta-negative">-0.0308</td>
+            <td class="delta-positive">+0.0149</td>
+          </tr>
+          <tr>
+            <td><code>embedding_strong_rerank</code></td>
+            <td class="delta-neutral">0.0000</td>
+            <td class="delta-neutral">0.0000</td>
+            <td class="delta-neutral">0.0000</td>
+            <td class="delta-positive">+0.0076</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>Key Findings</h2>
+      <div class="notes">
+        <div class="note"><strong>Lexical baseline:</strong> <code>keyword</code> remains hard to beat on rank-sensitive retrieval metrics.</div>
+        <div class="note"><strong>Dense retrieval:</strong> Embedding-only strategies improve faithfulness slightly but trail the lexical baseline on <code>MRR</code> and <code>nDCG</code>.</div>
+        <div class="note"><strong>Reranking:</strong> <code>embedding_strong_rerank</code> restores rank quality and matches the lexical baseline on <code>MRR</code> and <code>nDCG</code>.</div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Case Notes</h2>
+      <div class="notes">
+        <div class="note"><strong>What should take priority over writing the full incident timeline?</strong><br>embedding ranked incident_response_playbook-chunk-4 first and pushed the correct chunk to rank 2; embedding_strong_rerank restored incident_response_playbook-chunk-2 to rank 1.</div>
+        <div class="note"><strong>How should someone disclose a security flaw before a fix is ready?</strong><br>keyword starts with opensource_maintainer_guide-chunk-1 followed by public_operations_manual-chunk-3; embedding pulls in a near-miss at rank 2, while embedding_strong_rerank restores public_operations_manual-chunk-3 as the stronger second result.</div>
+        <div class="note"><strong>Does the playbook require weekend pager coverage?</strong><br>Both keyword and embedding_strong_rerank remain unsupported here, with MRR values of 0.0 and 0.0.</div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
