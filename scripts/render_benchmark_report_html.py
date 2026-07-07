@@ -10,6 +10,10 @@ if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
 
+from app.evaluation.history import DEFAULT_HISTORY_PATH
+from app.evaluation.history import build_history_trends
+
+
 RESULTS_DIR = PROJECT_ROOT / "results"
 COMPARISON_PATH = RESULTS_DIR / "retrieval-backend-comparison.json"
 OUTPUT_PATH = RESULTS_DIR / "benchmark-report.html"
@@ -32,16 +36,19 @@ DELTA_METRICS = [
 
 def main() -> None:
     comparison = json.loads(COMPARISON_PATH.read_text(encoding="utf-8"))
-    OUTPUT_PATH.write_text(render_html(comparison), encoding="utf-8")
+    history_path = Path(os.environ.get("RAG_EVAL_HISTORY_PATH", DEFAULT_HISTORY_PATH))
+    history_trends = build_history_trends(history_path) if history_path.exists() else []
+    OUTPUT_PATH.write_text(render_html(comparison, history_trends), encoding="utf-8")
     print(f"Wrote {OUTPUT_PATH.relative_to(PROJECT_ROOT)}")
 
 
-def render_html(comparison: dict) -> str:
+def render_html(comparison: dict, history_trends: list[dict] | None = None) -> str:
     strategies = comparison["strategies"]
     rows = "\n".join(render_strategy_row(strategy) for strategy in strategies)
     delta_rows = "\n".join(render_delta_row(comparison, strategy) for strategy in strategies[1:])
     case_notes = "\n".join(render_case_note(note) for note in build_case_notes())
     snapshot_src = escape(Path(os.path.relpath(SNAPSHOT_PATH, OUTPUT_PATH.parent)).as_posix())
+    history_section = render_history_section(history_trends or [])
 
     return f"""<!doctype html>
 <html lang="en">
@@ -127,6 +134,20 @@ def render_html(comparison: dict) -> str:
       background: #ffffff;
     }}
     .note strong {{ color: var(--accent); }}
+    .trend-chart {{
+      margin-top: 16px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #ffffff;
+      overflow: hidden;
+    }}
+    .trend-chart svg {{
+      display: block;
+      width: 100%;
+      height: auto;
+    }}
+    .trend-line {{ fill: none; stroke-width: 2.5; }}
+    .trend-point {{ stroke: #ffffff; stroke-width: 1.5; }}
   </style>
 </head>
 <body>
@@ -137,6 +158,8 @@ def render_html(comparison: dict) -> str:
     </header>
 
     <img class="snapshot" src="{snapshot_src}" alt="Benchmark snapshot for retrieval strategies">
+
+{history_section}
 
     <section>
       <h2>Strategy Summary</h2>
@@ -193,6 +216,189 @@ def render_html(comparison: dict) -> str:
 </body>
 </html>
 """
+
+
+def render_history_section(history_trends: list[dict]) -> str:
+    trends = [trend for trend in history_trends if trend["points"]]
+    if not trends:
+        return ""
+
+    chart = render_mrr_trend_svg(trends)
+    rows = "\n".join(render_history_row(trend) for trend in trends)
+    return f"""    <section>
+      <h2>History Trends</h2>
+      <p>Recent local benchmark history from <code>results/benchmark-history.sqlite3</code>.</p>
+      <div class="trend-chart">
+{chart}
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Strategy</th>
+            <th>Runs</th>
+            <th>Latest MRR</th>
+            <th>MRR Change</th>
+            <th>Latest nDCG</th>
+            <th>Faithfulness Change</th>
+          </tr>
+        </thead>
+        <tbody>
+{rows}
+        </tbody>
+      </table>
+    </section>
+"""
+
+
+def render_mrr_trend_svg(trends: list[dict]) -> str:
+    width = 960
+    height = 260
+    left = 64
+    right = 24
+    top = 28
+    bottom = 46
+    plot_width = width - left - right
+    plot_height = height - top - bottom
+    values = [
+        point["average_retrieval_mrr"]
+        for trend in trends
+        for point in trend["points"]
+    ]
+    min_value = min(values)
+    max_value = max(values)
+    if min_value == max_value:
+        min_value = max(0.0, min_value - 0.05)
+        max_value = min(1.0, max_value + 0.05)
+    else:
+        padding = (max_value - min_value) * 0.15
+        min_value = max(0.0, min_value - padding)
+        max_value = min(1.0, max_value + padding)
+
+    max_points = max(len(trend["points"]) for trend in trends)
+    series = "\n".join(
+        render_trend_series(
+            trend,
+            color=trend_color(index),
+            max_points=max_points,
+            bounds=(left, top, plot_width, plot_height, min_value, max_value),
+        )
+        for index, trend in enumerate(trends)
+    )
+    y_ticks = "\n".join(
+        render_y_tick(value, left, top, plot_width, plot_height, min_value, max_value)
+        for value in [min_value, (min_value + max_value) / 2, max_value]
+    )
+    return f"""        <svg viewBox="0 0 {width} {height}" role="img" aria-label="MRR trend by retrieval strategy">
+          <rect width="{width}" height="{height}" fill="#ffffff"></rect>
+{y_ticks}
+          <line x1="{left}" y1="{height - bottom}" x2="{width - right}" y2="{height - bottom}" stroke="#d9e1ea"></line>
+          <text x="{left}" y="{height - 16}" fill="#607083" font-size="13">Oldest</text>
+          <text x="{width - right}" y="{height - 16}" fill="#607083" font-size="13" text-anchor="end">Latest</text>
+{series}
+        </svg>"""
+
+
+def render_trend_series(
+    trend: dict,
+    color: str,
+    max_points: int,
+    bounds: tuple[float, float, float, float, float, float],
+) -> str:
+    left, top, plot_width, plot_height, min_value, max_value = bounds
+    coordinates = [
+        trend_coordinate(
+            index,
+            point["average_retrieval_mrr"],
+            len(trend["points"]),
+            max_points,
+            left,
+            top,
+            plot_width,
+            plot_height,
+            min_value,
+            max_value,
+        )
+        for index, point in enumerate(trend["points"])
+    ]
+    if len(coordinates) == 1:
+        x, y = coordinates[0]
+        path = f"M {x:.2f} {y:.2f}"
+    else:
+        path = " ".join(
+            f"{'M' if index == 0 else 'L'} {x:.2f} {y:.2f}"
+            for index, (x, y) in enumerate(coordinates)
+        )
+    points = "\n".join(
+        f'          <circle class="trend-point" cx="{x:.2f}" cy="{y:.2f}" r="4" fill="{color}"></circle>'
+        for x, y in coordinates
+    )
+    label_x, label_y = coordinates[-1]
+    label = escape(trend["retrieval_strategy"])
+    return f"""          <path class="trend-line" d="{path}" stroke="{color}"></path>
+{points}
+          <text x="{label_x + 8:.2f}" y="{label_y - 6:.2f}" fill="{color}" font-size="13">{label}</text>"""
+
+
+def trend_coordinate(
+    index: int,
+    value: float,
+    point_count: int,
+    max_points: int,
+    left: float,
+    top: float,
+    plot_width: float,
+    plot_height: float,
+    min_value: float,
+    max_value: float,
+) -> tuple[float, float]:
+    x_denominator = max(max_points - 1, 1)
+    x_offset = max_points - point_count
+    x = left + ((index + x_offset) / x_denominator) * plot_width
+    y_ratio = (value - min_value) / (max_value - min_value)
+    y = top + (1 - y_ratio) * plot_height
+    return x, y
+
+
+def render_y_tick(
+    value: float,
+    left: float,
+    top: float,
+    plot_width: float,
+    plot_height: float,
+    min_value: float,
+    max_value: float,
+) -> str:
+    y_ratio = (value - min_value) / (max_value - min_value)
+    y = top + (1 - y_ratio) * plot_height
+    return f"""          <line x1="{left}" y1="{y:.2f}" x2="{left + plot_width}" y2="{y:.2f}" stroke="#eef3f7"></line>
+          <text x="{left - 10}" y="{y + 4:.2f}" fill="#607083" font-size="12" text-anchor="end">{value:.3f}</text>"""
+
+
+def render_history_row(trend: dict) -> str:
+    latest = trend["latest"]
+    deltas = trend["deltas"]
+    mrr_delta = deltas.get("average_retrieval_mrr")
+    faithfulness_delta = deltas.get("average_answer_faithfulness")
+    cells = [
+        f"            <td><code>{escape(trend['retrieval_strategy'])}</code></td>",
+        f"            <td>{len(trend['points'])}</td>",
+        f"            <td>{latest['average_retrieval_mrr']:.4f}</td>",
+        f"            <td class=\"{delta_class(mrr_delta or 0.0)}\">{format_optional_delta(mrr_delta)}</td>",
+        f"            <td>{latest['average_retrieval_ndcg']:.4f}</td>",
+        f"            <td class=\"{delta_class(faithfulness_delta or 0.0)}\">{format_optional_delta(faithfulness_delta)}</td>",
+    ]
+    return "          <tr>\n" + "\n".join(cells) + "\n          </tr>"
+
+
+def format_optional_delta(value: float | None) -> str:
+    if value is None:
+        return "n/a"
+    return format_delta(value)
+
+
+def trend_color(index: int) -> str:
+    colors = ["#126c7a", "#7a4e12", "#6f4dbf", "#14764d", "#b33636", "#334155"]
+    return colors[index % len(colors)]
 
 
 def render_strategy_row(strategy: dict) -> str:

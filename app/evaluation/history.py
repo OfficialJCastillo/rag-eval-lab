@@ -11,6 +11,12 @@ from app.schemas.models import BenchmarkResult
 
 
 DEFAULT_HISTORY_PATH = Path("results") / "benchmark-history.sqlite3"
+TREND_METRICS = [
+    "average_retrieval_hit_rate",
+    "average_retrieval_mrr",
+    "average_retrieval_ndcg",
+    "average_answer_faithfulness",
+]
 
 
 def initialize_history_db(db_path: Path = DEFAULT_HISTORY_PATH) -> None:
@@ -186,3 +192,116 @@ def load_history_run(run_id: int, db_path: Path = DEFAULT_HISTORY_PATH) -> dict:
     for strategy in run_dict["strategies"]:
         strategy.pop("payload_json")
     return run_dict
+
+
+def build_history_trends(
+    db_path: Path = DEFAULT_HISTORY_PATH,
+    limit: int = 10,
+) -> list[dict]:
+    if limit < 1:
+        raise ValueError("History trend limit must be at least 1")
+
+    initialize_history_db(db_path)
+    with sqlite3.connect(db_path) as connection:
+        connection.row_factory = sqlite3.Row
+        runs = connection.execute(
+            """
+            SELECT
+                id,
+                comparison_id,
+                created_at
+            FROM benchmark_runs
+            ORDER BY created_at DESC, id DESC
+            LIMIT ?
+            """,
+            (limit,),
+        ).fetchall()
+
+        run_ids = [row["id"] for row in runs]
+        if not run_ids:
+            return []
+
+        placeholders = ",".join("?" for _id in run_ids)
+        strategy_rows = connection.execute(
+            f"""
+            SELECT
+                benchmark_run_id,
+                run_id,
+                retrieval_strategy,
+                average_retrieval_hit_rate,
+                average_retrieval_mrr,
+                average_retrieval_ndcg,
+                average_answer_faithfulness
+            FROM benchmark_strategy_results
+            WHERE benchmark_run_id IN ({placeholders})
+            ORDER BY benchmark_run_id, id
+            """,
+            run_ids,
+        ).fetchall()
+
+    runs_by_id = {
+        row["id"]: {
+            "id": row["id"],
+            "comparison_id": row["comparison_id"],
+            "created_at": row["created_at"],
+            "strategies": {},
+        }
+        for row in reversed(runs)
+    }
+    for row in strategy_rows:
+        run = runs_by_id[row["benchmark_run_id"]]
+        run["strategies"][row["retrieval_strategy"]] = {
+            "run_id": row["run_id"],
+            **{metric: row[metric] for metric in TREND_METRICS},
+        }
+
+    runs_chronological = list(runs_by_id.values())
+    return [
+        _summarize_strategy_trend(strategy, runs_chronological)
+        for strategy in _strategy_names(runs_by_id)
+    ]
+
+
+def _strategy_names(runs_by_id: dict[int, dict]) -> list[str]:
+    names = {
+        strategy_name
+        for run in runs_by_id.values()
+        for strategy_name in run["strategies"]
+    }
+    return sorted(names)
+
+
+def _summarize_strategy_trend(strategy_name: str, runs: list[dict]) -> dict:
+    points = []
+    for run in runs:
+        strategy = run["strategies"].get(strategy_name)
+        if strategy is None:
+            continue
+        points.append(
+            {
+                "history_run_id": run["id"],
+                "comparison_id": run["comparison_id"],
+                "created_at": run["created_at"],
+                "run_id": strategy["run_id"],
+                **{metric: strategy[metric] for metric in TREND_METRICS},
+            }
+        )
+
+    latest = points[-1] if points else None
+    previous = points[-2] if len(points) > 1 else None
+    return {
+        "retrieval_strategy": strategy_name,
+        "points": points,
+        "latest": latest,
+        "previous": previous,
+        "deltas": _metric_deltas(latest, previous),
+    }
+
+
+def _metric_deltas(latest: dict | None, previous: dict | None) -> dict:
+    if latest is None or previous is None:
+        return {}
+    return {
+        metric: latest[metric] - previous[metric]
+        for metric in TREND_METRICS
+    }

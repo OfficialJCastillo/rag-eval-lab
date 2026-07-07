@@ -113,6 +113,8 @@ Inspect recent benchmark history:
 python scripts/show_benchmark_history.py
 ```
 
+The history output includes per-strategy trend summaries for recent runs, including latest metric values and changes from the previous run.
+
 Render a markdown benchmark report:
 
 ```bash
@@ -124,6 +126,8 @@ Render a standalone HTML benchmark report:
 ```bash
 python scripts/render_benchmark_report_html.py
 ```
+
+When `results/benchmark-history.sqlite3` exists, the HTML report includes a local history trend chart and latest-change table.
 
 Render the README benchmark snapshot SVG:
 
@@ -232,7 +236,7 @@ Current comparison summary from `results/retrieval-backend-comparison.json`, ren
 - Dense retrieval alone improves answer faithfulness slightly, but both embedding backends still trail the lexical baseline on `MRR` and `nDCG`.
 - Adding a late-interaction reranker closes that ranking gap and matches the lexical baseline on `MRR` and `nDCG` without changing the benchmark corpus.
 - The committed benchmark regression test treats meaningful drops below the current floor values as review-worthy drift, even if the application smoke tests still pass.
-- Benchmark comparisons are also appendable to `results/benchmark-history.sqlite3` so local experiments can be inspected over time without replacing committed JSON snapshots.
+- Benchmark comparisons are also appendable to `results/benchmark-history.sqlite3` so local experiments can be inspected as trend summaries without replacing committed JSON snapshots.
 
 ## Example Cases
 
@@ -257,7 +261,7 @@ The starter corpus now mixes university policy text, an open-source maintainer g
 - The reranked pipeline matches the lexical baseline on rank-sensitive retrieval metrics, which suggests ranking quality was the main weakness in the dense-only variants
 - Document parsing is text-first and does not yet handle PDFs directly
 - Citation support and faithfulness scoring are heuristic and should be replaced with stronger evaluators
-- Benchmark history is local SQLite only; there is no hosted experiment dashboard yet
+- Benchmark history charts are local report output only; there is no hosted experiment dashboard yet
 
 ## Roadmap
 
