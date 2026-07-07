@@ -105,6 +105,14 @@ Run the comparison script:
 python scripts/compare_benchmarks.py
 ```
 
+The comparison script also records each comparison run in a local SQLite history database at `results/benchmark-history.sqlite3`.
+
+Inspect recent benchmark history:
+
+```bash
+python scripts/show_benchmark_history.py
+```
+
 Render a markdown benchmark report:
 
 ```bash
@@ -224,6 +232,7 @@ Current comparison summary from `results/retrieval-backend-comparison.json`, ren
 - Dense retrieval alone improves answer faithfulness slightly, but both embedding backends still trail the lexical baseline on `MRR` and `nDCG`.
 - Adding a late-interaction reranker closes that ranking gap and matches the lexical baseline on `MRR` and `nDCG` without changing the benchmark corpus.
 - The committed benchmark regression test treats meaningful drops below the current floor values as review-worthy drift, even if the application smoke tests still pass.
+- Benchmark comparisons are also appendable to `results/benchmark-history.sqlite3` so local experiments can be inspected over time without replacing committed JSON snapshots.
 
 ## Example Cases
 
@@ -248,7 +257,7 @@ The starter corpus now mixes university policy text, an open-source maintainer g
 - The reranked pipeline matches the lexical baseline on rank-sensitive retrieval metrics, which suggests ranking quality was the main weakness in the dense-only variants
 - Document parsing is text-first and does not yet handle PDFs directly
 - Citation support and faithfulness scoring are heuristic and should be replaced with stronger evaluators
-- No experiment tracking database yet
+- Benchmark history is local SQLite only; there is no hosted experiment dashboard yet
 
 ## Roadmap
 
@@ -257,3 +266,4 @@ The starter corpus now mixes university policy text, an open-source maintainer g
 - compare chunking strategies
 - add richer faithfulness and hallucination checks
 - add interactive benchmark report drill-downs
+- add benchmark history charts and trend summaries

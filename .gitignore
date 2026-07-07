@@ -5,3 +5,4 @@ __pycache__/
 .idea/
 .DS_Store
 RAG_EVAL_LAB_HANDOFF.md
+results/benchmark-history.sqlite3
