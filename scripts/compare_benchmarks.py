@@ -10,6 +10,8 @@ if str(PROJECT_ROOT) not in sys.path:
 from app.schemas.models import BenchmarkComparisonResult
 from app.schemas.models import BenchmarkRequest
 from app.schemas.models import StrategySummary
+from app.evaluation.history import DEFAULT_HISTORY_PATH
+from app.evaluation.history import record_comparison_run
 from app.retrieval.index import available_strategies
 from app.services.pipeline import RAGEvaluationPipeline
 from scripts.run_benchmark import build_default_cases
@@ -44,7 +46,9 @@ def main() -> None:
 
     comparison_path = Path("results") / f"{comparison.comparison_id}.json"
     comparison_path.write_text(comparison.model_dump_json(indent=2), encoding="utf-8")
+    history_run_id = record_comparison_run(comparison, results)
     print(json.dumps(comparison.model_dump(), indent=2))
+    print(f"Recorded benchmark history run {history_run_id} in {DEFAULT_HISTORY_PATH}")
 
 
 def build_requests() -> list[BenchmarkRequest]:
