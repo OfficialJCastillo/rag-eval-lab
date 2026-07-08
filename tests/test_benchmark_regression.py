@@ -112,3 +112,66 @@ def test_html_report_includes_metric_deltas() -> None:
             continue
         expected = f"+{value:.4f}" if value > 0 else f"{value:.4f}"
         assert expected in report
+
+
+def test_html_report_can_render_history_trends() -> None:
+    comparison = load_json(COMPARISON_PATH)
+    trends = [
+        {
+            "retrieval_strategy": "keyword",
+            "points": [
+                {
+                    "history_run_id": 1,
+                    "comparison_id": "retrieval-backend-comparison",
+                    "created_at": "2026-07-06T12:00:00+00:00",
+                    "run_id": "baseline-keyword-retrieval",
+                    "average_retrieval_hit_rate": 0.9,
+                    "average_retrieval_mrr": 0.9,
+                    "average_retrieval_ndcg": 0.9,
+                    "average_answer_faithfulness": 0.8,
+                },
+                {
+                    "history_run_id": 2,
+                    "comparison_id": "retrieval-backend-comparison",
+                    "created_at": "2026-07-06T13:00:00+00:00",
+                    "run_id": "baseline-keyword-retrieval",
+                    "average_retrieval_hit_rate": 0.9,
+                    "average_retrieval_mrr": 0.95,
+                    "average_retrieval_ndcg": 0.93,
+                    "average_answer_faithfulness": 0.82,
+                },
+            ],
+            "latest": {
+                "history_run_id": 2,
+                "comparison_id": "retrieval-backend-comparison",
+                "created_at": "2026-07-06T13:00:00+00:00",
+                "run_id": "baseline-keyword-retrieval",
+                "average_retrieval_hit_rate": 0.9,
+                "average_retrieval_mrr": 0.95,
+                "average_retrieval_ndcg": 0.93,
+                "average_answer_faithfulness": 0.82,
+            },
+            "previous": {
+                "history_run_id": 1,
+                "comparison_id": "retrieval-backend-comparison",
+                "created_at": "2026-07-06T12:00:00+00:00",
+                "run_id": "baseline-keyword-retrieval",
+                "average_retrieval_hit_rate": 0.9,
+                "average_retrieval_mrr": 0.9,
+                "average_retrieval_ndcg": 0.9,
+                "average_answer_faithfulness": 0.8,
+            },
+            "deltas": {
+                "average_retrieval_hit_rate": 0.0,
+                "average_retrieval_mrr": 0.05,
+                "average_retrieval_ndcg": 0.03,
+                "average_answer_faithfulness": 0.02,
+            },
+        }
+    ]
+
+    html = render_html(comparison, trends)
+
+    assert "History Trends" in html
+    assert "MRR trend by retrieval strategy" in html
+    assert "+0.0500" in html

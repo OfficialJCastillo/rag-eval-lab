@@ -82,6 +82,20 @@
       background: #ffffff;
     }
     .note strong { color: var(--accent); }
+    .trend-chart {
+      margin-top: 16px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #ffffff;
+      overflow: hidden;
+    }
+    .trend-chart svg {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+    .trend-line { fill: none; stroke-width: 2.5; }
+    .trend-point { stroke: #ffffff; stroke-width: 1.5; }
   </style>
 </head>
 <body>
@@ -92,6 +106,8 @@
     </header>
 
     <img class="snapshot" src="../docs/benchmark-snapshot.svg" alt="Benchmark snapshot for retrieval strategies">
+
+
 
     <section>
       <h2>Strategy Summary</h2>

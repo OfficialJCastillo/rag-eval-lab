@@ -9,6 +9,7 @@ if str(PROJECT_ROOT) not in sys.path:
 
 
 from app.evaluation.history import DEFAULT_HISTORY_PATH
+from app.evaluation.history import build_history_trends
 from app.evaluation.history import list_history_runs
 from app.evaluation.history import load_history_run
 
@@ -20,11 +21,13 @@ def main() -> None:
         return
 
     latest = load_history_run(rows[0]["id"])
+    trends = build_history_trends()
     print(
         json.dumps(
             {
                 "history_path": str(DEFAULT_HISTORY_PATH),
                 "runs": rows,
+                "trends": trends,
                 "latest": {
                     "id": latest["id"],
                     "comparison_id": latest["comparison_id"],

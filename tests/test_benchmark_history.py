@@ -1,6 +1,7 @@
 import json
 import sqlite3
 
+from app.evaluation.history import build_history_trends
 from app.evaluation.history import initialize_history_db
 from app.evaluation.history import list_history_runs
 from app.evaluation.history import load_history_run
@@ -135,3 +136,44 @@ def test_record_comparison_requires_matching_results(tmp_path) -> None:
         assert "baseline-keyword-retrieval" in str(error)
     else:
         raise AssertionError("Expected missing benchmark result to fail")
+
+
+def test_build_history_trends_summarizes_recent_metric_changes(tmp_path) -> None:
+    db_path = tmp_path / "history.sqlite3"
+    first_results = [
+        make_result("baseline-keyword-retrieval", "keyword", 0.9),
+        make_result("semantic-tfidf-retrieval", "semantic", 0.8),
+    ]
+    second_results = [
+        make_result("baseline-keyword-retrieval", "keyword", 0.95),
+        make_result("semantic-tfidf-retrieval", "semantic", 0.7),
+    ]
+
+    record_comparison_run(
+        make_comparison(first_results),
+        first_results,
+        db_path=db_path,
+        created_at="2026-07-06T12:00:00+00:00",
+    )
+    record_comparison_run(
+        make_comparison(second_results),
+        second_results,
+        db_path=db_path,
+        created_at="2026-07-06T13:00:00+00:00",
+    )
+
+    trends = build_history_trends(db_path)
+    by_strategy = {trend["retrieval_strategy"]: trend for trend in trends}
+
+    keyword_mrr_values = [
+        point["average_retrieval_mrr"]
+        for point in by_strategy["keyword"]["points"]
+    ]
+    assert keyword_mrr_values == [
+        0.9,
+        0.95,
+    ]
+    keyword_mrr_delta = by_strategy["keyword"]["deltas"]["average_retrieval_mrr"]
+    semantic_mrr_delta = by_strategy["semantic"]["deltas"]["average_retrieval_mrr"]
+    assert round(keyword_mrr_delta, 4) == 0.05
+    assert round(semantic_mrr_delta, 4) == -0.1
