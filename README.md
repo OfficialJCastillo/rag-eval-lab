@@ -23,6 +23,10 @@ Latest benchmark comparison snapshot (visual + table), sourced from `results/ret
 
 ![Benchmark snapshot for retrieval strategies](docs/benchmark-snapshot.svg)
 
+Local benchmark history trend snapshot, sourced from `results/benchmark-history.sqlite3` after repeated comparison runs:
+
+![Benchmark history trend snapshot](docs/benchmark-history-trends.svg)
+
 | Strategy | Hit Rate | MRR | nDCG | Faithfulness |
 | --- | ---: | ---: | ---: | ---: |
 | `keyword` | 0.9167 | 0.9167 | 0.9167 | 0.8360 |
@@ -133,6 +137,12 @@ Render the README benchmark snapshot SVG:
 
 ```bash
 python scripts/render_benchmark_snapshot_svg.py
+```
+
+Render the README benchmark history trend SVG:
+
+```bash
+python scripts/render_benchmark_history_snapshot_svg.py
 ```
 
 If `docs/benchmark-snapshot.svg` ever conflicts during a merge, regenerate it from the JSON source with the command above and keep the re-rendered output.

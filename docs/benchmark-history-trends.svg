@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="420" viewBox="0 0 980 420" role="img" aria-labelledby="title desc">
+  <title id="title">rag-eval-lab benchmark history trends</title>
+  <desc id="desc">MRR trend lines for retrieval strategies across local benchmark history runs.</desc>
+  <style>
+    .bg { fill: #0b1020; }
+    .panel { fill: #111827; }
+    .title { fill: #f8fafc; font: 700 24px 'Inter', 'Segoe UI', sans-serif; }
+    .subtitle { fill: #cbd5e1; font: 400 14px 'Inter', 'Segoe UI', sans-serif; }
+    .axis { stroke: #334155; stroke-width: 1; }
+    .grid { stroke: #1f2937; stroke-width: 1; }
+    .tick { fill: #94a3b8; font: 600 12px 'Inter', 'Segoe UI', sans-serif; }
+    .line { fill: none; stroke-width: 3; }
+    .point { stroke: #0b1020; stroke-width: 2; }
+    .legend { fill: #e2e8f0; font: 600 13px 'Inter', 'Segoe UI', sans-serif; }
+    .latest { fill: #cbd5e1; font: 400 12px 'Inter', 'Segoe UI', sans-serif; }
+  </style>
+
+  <rect class="bg" x="0" y="0" width="980" height="420" rx="14"/>
+  <text class="title" x="30" y="42">rag-eval-lab - benchmark history trends</text>
+  <text class="subtitle" x="30" y="66">MRR by retrieval strategy across 2 local comparison runs</text>
+
+  <rect class="panel" x="24" y="88" width="932" height="300" rx="10"/>
+  <line class="grid" x1="72" y1="346.00" x2="770" y2="346.00"/>
+  <text class="tick" x="58" y="350.00" text-anchor="end">0.818</text>
+  <line class="grid" x1="72" y1="225.00" x2="770" y2="225.00"/>
+  <text class="tick" x="58" y="229.00" text-anchor="end">0.875</text>
+  <line class="grid" x1="72" y1="104.00" x2="770" y2="104.00"/>
+  <text class="tick" x="58" y="108.00" text-anchor="end">0.932</text>
+  <line class="axis" x1="72" y1="346" x2="770" y2="346"/>
+  <text class="tick" x="72" y="382">Oldest</text>
+  <text class="tick" x="770" y="382" text-anchor="end">Latest</text>
+  <path class="line" d="M 72.00 225.00 L 770.00 225.00" stroke="#60a5fa"/>
+  <circle class="point" cx="72.00" cy="225.00" r="5" fill="#60a5fa"/>
+  <circle class="point" cx="770.00" cy="225.00" r="5" fill="#60a5fa"/>
+  <path class="line" d="M 72.00 225.00 L 770.00 225.00" stroke="#22c55e"/>
+  <circle class="point" cx="72.00" cy="225.00" r="5" fill="#22c55e"/>
+  <circle class="point" cx="770.00" cy="225.00" r="5" fill="#22c55e"/>
+  <path class="line" d="M 72.00 136.03 L 770.00 136.03" stroke="#a78bfa"/>
+  <circle class="point" cx="72.00" cy="136.03" r="5" fill="#a78bfa"/>
+  <circle class="point" cx="770.00" cy="136.03" r="5" fill="#a78bfa"/>
+  <path class="line" d="M 72.00 136.03 L 770.00 136.03" stroke="#f59e0b"/>
+  <circle class="point" cx="72.00" cy="136.03" r="5" fill="#f59e0b"/>
+  <circle class="point" cx="770.00" cy="136.03" r="5" fill="#f59e0b"/>
+  <path class="line" d="M 72.00 313.97 L 770.00 313.97" stroke="#f97316"/>
+  <circle class="point" cx="72.00" cy="313.97" r="5" fill="#f97316"/>
+  <circle class="point" cx="770.00" cy="313.97" r="5" fill="#f97316"/>
+  <circle cx="770" cy="121" r="5" fill="#60a5fa"/>
+  <text class="legend" x="784" y="126">embedding</text>
+  <text class="latest" x="784" y="142">latest MRR 0.8750 - 0.0000</text>
+  <circle cx="770" cy="155" r="5" fill="#22c55e"/>
+  <text class="legend" x="784" y="160">embedding_strong</text>
+  <text class="latest" x="784" y="176">latest MRR 0.8750 - 0.0000</text>
+  <circle cx="770" cy="189" r="5" fill="#a78bfa"/>
+  <text class="legend" x="784" y="194">embedding_strong_rerank</text>
+  <text class="latest" x="784" y="210">latest MRR 0.9167 - 0.0000</text>
+  <circle cx="770" cy="223" r="5" fill="#f59e0b"/>
+  <text class="legend" x="784" y="228">keyword</text>
+  <text class="latest" x="784" y="244">latest MRR 0.9167 - 0.0000</text>
+  <circle cx="770" cy="257" r="5" fill="#f97316"/>
+  <text class="legend" x="784" y="262">semantic</text>
+  <text class="latest" x="784" y="278">latest MRR 0.8333 - 0.0000</text>
+</svg>

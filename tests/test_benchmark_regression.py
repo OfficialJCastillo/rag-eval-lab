@@ -1,6 +1,7 @@
 from pathlib import Path
 import json
 
+from scripts.render_benchmark_history_snapshot_svg import render_svg as render_history_svg
 from scripts.render_benchmark_report_html import render_html
 
 
@@ -9,6 +10,7 @@ RESULTS_DIR = PROJECT_ROOT / "results"
 COMPARISON_PATH = RESULTS_DIR / "retrieval-backend-comparison.json"
 REPORT_PATH = RESULTS_DIR / "benchmark-report.md"
 HTML_REPORT_PATH = RESULTS_DIR / "benchmark-report.html"
+HISTORY_SNAPSHOT_PATH = PROJECT_ROOT / "docs" / "benchmark-history-trends.svg"
 
 EXPECTED_STRATEGIES = [
     "keyword",
@@ -175,3 +177,41 @@ def test_html_report_can_render_history_trends() -> None:
     assert "History Trends" in html
     assert "MRR trend by retrieval strategy" in html
     assert "+0.0500" in html
+
+
+def test_history_trend_snapshot_svg_renders_strategy_summary() -> None:
+    trends = [
+        {
+            "retrieval_strategy": "keyword",
+            "points": [
+                {"average_retrieval_mrr": 0.9},
+                {"average_retrieval_mrr": 0.95},
+            ],
+            "latest": {"average_retrieval_mrr": 0.95},
+            "deltas": {"average_retrieval_mrr": 0.05},
+        },
+        {
+            "retrieval_strategy": "semantic",
+            "points": [
+                {"average_retrieval_mrr": 0.8},
+                {"average_retrieval_mrr": 0.83},
+            ],
+            "latest": {"average_retrieval_mrr": 0.83},
+            "deltas": {"average_retrieval_mrr": 0.03},
+        },
+    ]
+
+    svg = render_history_svg(trends)
+
+    assert "benchmark history trends" in svg
+    assert "keyword" in svg
+    assert "semantic" in svg
+    assert "+0.0500" in svg
+
+
+def test_committed_history_trend_snapshot_exists() -> None:
+    svg = HISTORY_SNAPSHOT_PATH.read_text(encoding="utf-8")
+
+    assert "rag-eval-lab benchmark history trends" in svg
+    assert "keyword" in svg
+    assert "embedding_strong_rerank" in svg
