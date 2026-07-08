@@ -173,9 +173,9 @@ http://127.0.0.1:8000/
 The page provides a lightweight one-screen flow to:
 
 - enter a question
-- choose retrieval strategy
-- run grounded answer generation
-- inspect returned citations and unsupported claims
+- choose one or more retrieval strategies
+- compare grounded answers side by side
+- inspect returned citations, support counts, retrieval scores, and unsupported claims
 
 ## Example Benchmark Output
 
