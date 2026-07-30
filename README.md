@@ -2,20 +2,18 @@
 
 [![CI](https://github.com/OfficialJCastillo/rag-eval-lab/actions/workflows/ci.yml/badge.svg)](https://github.com/OfficialJCastillo/rag-eval-lab/actions/workflows/ci.yml)
 
-A framework for evaluating retrieval-augmented QA systems using citation support, retrieval relevance, and answer faithfulness on public document corpora.
+A reproducible evaluation lab for retrieval-augmented generation systems. It compares lexical, semantic, embedding, and reranked retrieval using citation support, retrieval quality, and answer-faithfulness metrics on public document corpora.
 
-## Overview
+## Key Results
 
-`rag-eval-lab` is a narrow, professional v1 scaffold for experimenting with grounded question answering over public documents. The initial focus is not a polished chat UI. It is a reproducible evaluation loop:
+- Achieved a **0.9167 retrieval hit rate** across all five evaluated strategies.
+- Late-interaction reranking raised dense retrieval to **0.9167 MRR and nDCG**, matching the keyword baseline.
+- Embedding retrieval produced the highest measured answer faithfulness at **0.8531**.
+- Added deterministic regression checks, benchmark-history tracking, and side-by-side API/UI comparisons.
 
-- load public documents
-- split them into chunks
-- retrieve relevant evidence with keyword or vector-space retrieval
-- generate a grounded answer with citations
-- score retrieval, citation support, and answer quality
-- produce a benchmark artifact
+The keyword baseline's strong performance is an important engineering result: on a small, terminology-aligned corpus, added retrieval complexity does not automatically improve ranking. The benchmark makes that tradeoff visible and shows where reranking recovers dense-retrieval errors.
 
-This repository is intentionally scoped to public or synthetic data to avoid employer IP overlap.
+Built only with public or synthetic data to avoid employer-IP overlap.
 
 ## Benchmark Snapshot
 
