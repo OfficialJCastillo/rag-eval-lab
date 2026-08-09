@@ -14,7 +14,7 @@ from app.evaluation.history import build_history_trends
 
 OUTPUT_PATH = PROJECT_ROOT / "docs" / "benchmark-history-trends.svg"
 
-COLORS = ["#60a5fa", "#22c55e", "#a78bfa", "#f59e0b", "#f97316", "#94a3b8"]
+COLORS = ["#60a5fa", "#34d399", "#a78bfa", "#fbbf24", "#fb923c", "#94a3b8"]
 
 
 def main() -> None:
@@ -30,16 +30,10 @@ def main() -> None:
 def render_svg(trends: list[dict]) -> str:
     visible_trends = [trend for trend in trends if trend["points"]]
     width = 980
-    height = 420
-    left = 72
-    right = 210
-    top = 104
-    bottom = 74
-    plot_width = width - left - right
-    plot_height = height - top - bottom
+    height = 124 + len(visible_trends) * 58 + 22
 
     if not visible_trends:
-        return empty_svg(width, height)
+        return empty_svg(width, 260)
 
     values = [
         point["average_retrieval_mrr"]
@@ -48,142 +42,125 @@ def render_svg(trends: list[dict]) -> str:
     ]
     min_value, max_value = metric_bounds(values)
     max_points = max(len(trend["points"]) for trend in visible_trends)
-
-    grid = "\n".join(
-        render_y_tick(value, left, top, plot_width, plot_height, min_value, max_value)
-        for value in [min_value, (min_value + max_value) / 2, max_value]
-    )
-    series = "\n".join(
-        render_series(
+    rows = "\n".join(
+        render_trend_row(
             trend,
             COLORS[index % len(COLORS)],
+            index,
             max_points,
-            left,
-            top,
-            plot_width,
-            plot_height,
             min_value,
             max_value,
         )
         for index, trend in enumerate(visible_trends)
     )
-    legend = "\n".join(
-        render_legend_item(trend, COLORS[index % len(COLORS)], 770, 126 + index * 34)
-        for index, trend in enumerate(visible_trends)
-    )
-    latest_run_count = max_points
 
     return f"""<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}" role="img" aria-labelledby="title desc">
   <title id="title">rag-eval-lab benchmark history trends</title>
-  <desc id="desc">MRR trend lines for retrieval strategies across local benchmark history runs.</desc>
+  <desc id="desc">Separate MRR sparklines and latest-run changes for each retrieval strategy.</desc>
   <style>
     .bg {{ fill: #0b1020; }}
-    .panel {{ fill: #111827; }}
-    .title {{ fill: #f8fafc; font: 700 24px 'Inter', 'Segoe UI', sans-serif; }}
-    .subtitle {{ fill: #cbd5e1; font: 400 14px 'Inter', 'Segoe UI', sans-serif; }}
-    .axis {{ stroke: #334155; stroke-width: 1; }}
-    .grid {{ stroke: #1f2937; stroke-width: 1; }}
-    .tick {{ fill: #94a3b8; font: 600 12px 'Inter', 'Segoe UI', sans-serif; }}
-    .line {{ fill: none; stroke-width: 3; }}
-    .point {{ stroke: #0b1020; stroke-width: 2; }}
-    .legend {{ fill: #e2e8f0; font: 600 13px 'Inter', 'Segoe UI', sans-serif; }}
-    .latest {{ fill: #cbd5e1; font: 400 12px 'Inter', 'Segoe UI', sans-serif; }}
+    .title {{ fill: #f8fafc; font: 700 25px 'Inter', 'Segoe UI', sans-serif; }}
+    .subtitle {{ fill: #aebbd0; font: 500 14px 'Inter', 'Segoe UI', sans-serif; }}
+    .header {{ fill: #dbe5f3; font: 700 13px 'Inter', 'Segoe UI', sans-serif; }}
+    .row {{ fill: #121a2a; }}
+    .row-alt {{ fill: #0f1726; }}
+    .label {{ fill: #e2e8f0; font: 600 14px 'Inter', 'Segoe UI', sans-serif; }}
+    .track {{ stroke: #34425a; stroke-width: 2; }}
+    .line {{ fill: none; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }}
+    .point {{ stroke: #121a2a; stroke-width: 2; }}
+    .value {{ fill: #f8fafc; font: 650 13px 'Inter', 'Segoe UI', sans-serif; }}
+    .delta {{ fill: #cbd5e1; font: 600 13px 'Inter', 'Segoe UI', sans-serif; }}
+    .status {{ fill: #0b1020; font: 700 11px 'Inter', 'Segoe UI', sans-serif; text-anchor: middle; }}
   </style>
 
-  <rect class="bg" x="0" y="0" width="{width}" height="{height}" rx="14"/>
-  <text class="title" x="30" y="42">rag-eval-lab - benchmark history trends</text>
-  <text class="subtitle" x="30" y="66">MRR by retrieval strategy across {latest_run_count} local comparison runs</text>
+  <rect class="bg" x="0" y="0" width="{width}" height="{height}" rx="16"/>
+  <text class="title" x="30" y="43">Benchmark history · MRR stability</text>
+  <text class="subtitle" x="30" y="68">{max_points} local comparison runs · one sparkline per strategy · shared 0–1 scale</text>
 
-  <rect class="panel" x="24" y="88" width="932" height="300" rx="10"/>
-{grid}
-  <line class="axis" x1="{left}" y1="{height - bottom}" x2="{width - right}" y2="{height - bottom}"/>
-  <text class="tick" x="{left}" y="{height - 38}">Oldest</text>
-  <text class="tick" x="{width - right}" y="{height - 38}" text-anchor="end">Latest</text>
-{series}
-{legend}
+  <text class="header" x="36" y="108">Strategy</text>
+  <text class="header" x="260" y="108">Oldest → latest</text>
+  <text class="header" x="636" y="108">Latest MRR</text>
+  <text class="header" x="752" y="108">Change</text>
+  <text class="header" x="875" y="108">Status</text>
+{rows}
 </svg>
 """
+
+
+def render_trend_row(
+    trend: dict,
+    color: str,
+    index: int,
+    max_points: int,
+    min_value: float,
+    max_value: float,
+) -> str:
+    row_y = 124 + index * 58
+    row_class = "row" if index % 2 == 0 else "row row-alt"
+    raw_label = escape(trend["retrieval_strategy"])
+    display_label = escape(trend["retrieval_strategy"].replace("_", " "))
+    spark_left = 260
+    spark_width = 330
+    spark_top = row_y + 9
+    spark_height = 32
+    points = [
+        (
+            x_coordinate(
+                point_index,
+                len(trend["points"]),
+                max_points,
+                spark_left,
+                spark_width,
+            ),
+            y_coordinate(
+                point["average_retrieval_mrr"],
+                spark_top,
+                spark_height,
+                min_value,
+                max_value,
+            ),
+        )
+        for point_index, point in enumerate(trend["points"])
+    ]
+    path = " ".join(
+        f"{'M' if point_index == 0 else 'L'} {x:.2f} {y:.2f}"
+        for point_index, (x, y) in enumerate(points)
+    )
+    circles = "\n".join(
+        f'    <circle class="point" cx="{x:.2f}" cy="{y:.2f}" r="4.5" fill="{color}"/>'
+        for x, y in points
+    )
+    latest_mrr = trend["latest"]["average_retrieval_mrr"]
+    delta = trend["deltas"].get("average_retrieval_mrr")
+    delta_label = "—" if delta is None else format_delta(delta)
+    status_label, status_color = delta_status(delta)
+
+    return f"""  <g data-strategy="{raw_label}">
+    <rect class="{row_class}" x="20" y="{row_y}" width="940" height="50" rx="10"/>
+    <text class="label" x="36" y="{row_y + 31}">{display_label}</text>
+    <line class="track" x1="{spark_left}" y1="{row_y + 25}" x2="{spark_left + spark_width}" y2="{row_y + 25}"/>
+    <path class="line" d="{path}" stroke="{color}"/>
+{circles}
+    <text class="value" x="636" y="{row_y + 31}">{latest_mrr:.4f}</text>
+    <text class="delta" x="752" y="{row_y + 31}">{delta_label}</text>
+    <rect x="856" y="{row_y + 15}" width="88" height="22" rx="11" fill="{status_color}"/>
+    <text class="status" x="900" y="{row_y + 30}">{status_label}</text>
+  </g>"""
 
 
 def empty_svg(width: int, height: int) -> str:
     return f"""<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}" role="img" aria-labelledby="title desc">
   <title id="title">rag-eval-lab benchmark history trends</title>
   <desc id="desc">No local benchmark history runs were available.</desc>
-  <rect fill="#0b1020" x="0" y="0" width="{width}" height="{height}" rx="14"/>
-  <text fill="#f8fafc" x="30" y="46" font-size="24" font-weight="700">rag-eval-lab · benchmark history trends</text>
-  <text fill="#cbd5e1" x="30" y="84" font-size="15">Run scripts/compare_benchmarks.py twice to populate local history.</text>
+  <rect fill="#0b1020" x="0" y="0" width="{width}" height="{height}" rx="16"/>
+  <text fill="#f8fafc" x="30" y="46" font-size="25" font-weight="700">Benchmark history · MRR stability</text>
+  <text fill="#aebbd0" x="30" y="84" font-size="15">Run scripts/compare_benchmarks.py twice to populate local history.</text>
 </svg>
 """
 
 
-def metric_bounds(values: list[float]) -> tuple[float, float]:
-    min_value = min(values)
-    max_value = max(values)
-    if min_value == max_value:
-        return max(0.0, min_value - 0.05), min(1.0, max_value + 0.05)
-    padding = (max_value - min_value) * 0.18
-    return max(0.0, min_value - padding), min(1.0, max_value + padding)
-
-
-def render_y_tick(
-    value: float,
-    left: int,
-    top: int,
-    plot_width: int,
-    plot_height: int,
-    min_value: float,
-    max_value: float,
-) -> str:
-    y = y_coordinate(value, top, plot_height, min_value, max_value)
-    return f"""  <line class="grid" x1="{left}" y1="{y:.2f}" x2="{left + plot_width}" y2="{y:.2f}"/>
-  <text class="tick" x="{left - 14}" y="{y + 4:.2f}" text-anchor="end">{value:.3f}</text>"""
-
-
-def render_series(
-    trend: dict,
-    color: str,
-    max_points: int,
-    left: int,
-    top: int,
-    plot_width: int,
-    plot_height: int,
-    min_value: float,
-    max_value: float,
-) -> str:
-    points = [
-        (
-            x_coordinate(index, len(trend["points"]), max_points, left, plot_width),
-            y_coordinate(
-                point["average_retrieval_mrr"],
-                top,
-                plot_height,
-                min_value,
-                max_value,
-            ),
-        )
-        for index, point in enumerate(trend["points"])
-    ]
-    path = " ".join(
-        f"{'M' if index == 0 else 'L'} {x:.2f} {y:.2f}"
-        for index, (x, y) in enumerate(points)
-    )
-    circles = "\n".join(
-        f'  <circle class="point" cx="{x:.2f}" cy="{y:.2f}" r="5" fill="{color}"/>'
-        for x, y in points
-    )
-    return f"""  <path class="line" d="{path}" stroke="{color}"/>
-{circles}"""
-
-
-def render_legend_item(trend: dict, color: str, x: int, y: int) -> str:
-    latest = trend["latest"]
-    label = escape(trend["retrieval_strategy"])
-    latest_mrr = latest["average_retrieval_mrr"]
-    delta = trend["deltas"].get("average_retrieval_mrr")
-    delta_label = "no previous run" if delta is None else format_delta(delta)
-    return f"""  <circle cx="{x}" cy="{y - 5}" r="5" fill="{color}"/>
-  <text class="legend" x="{x + 14}" y="{y}">{label}</text>
-  <text class="latest" x="{x + 14}" y="{y + 16}">latest MRR {latest_mrr:.4f} - {delta_label}</text>"""
+def metric_bounds(_values: list[float]) -> tuple[float, float]:
+    return 0.0, 1.0
 
 
 def x_coordinate(
@@ -213,6 +190,16 @@ def format_delta(value: float) -> str:
     if value > 0:
         return f"+{value:.4f}"
     return f"{value:.4f}"
+
+
+def delta_status(value: float | None) -> tuple[str, str]:
+    if value is None:
+        return "new", "#94a3b8"
+    if abs(value) < 0.00005:
+        return "stable", "#6ee7b7"
+    if value > 0:
+        return "improved", "#93c5fd"
+    return "declined", "#fbbf24"
 
 
 if __name__ == "__main__":
