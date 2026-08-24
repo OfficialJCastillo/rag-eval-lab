@@ -275,9 +275,9 @@ The starter corpus now mixes university policy text, an open-source maintainer g
 
 ## Roadmap
 
+- add dashboard-style benchmark home with report and history drill-downs
 - add PDF ingestion and metadata extraction
 - add model-backed embedding retrieval backend
 - compare chunking strategies
 - add richer faithfulness and hallucination checks
-- add interactive benchmark report drill-downs
-- add benchmark history charts and trend summaries
+- add stricter unsupported-answer and abstention scoring
